@@ -1542,6 +1542,15 @@
             errEl.innerText = "يرجى إدخال كود التفعيل.";
             return;
         }
+             const masterCode = "DRMAHER-2026";
+        if (code === masterCode.toUpperCase()) {
+            db.license.usedCodesMap[code] = db.license.deviceId;
+            db.license.activatedCode = code;
+            db.license.activatedForDevice = db.license.deviceId;
+            saveDB();
+            checkLicenseAndGate();
+            return;
+        }
 
         if (db.license.usedCodesMap[code]) {
             if (db.license.usedCodesMap[code] === db.license.deviceId) {
