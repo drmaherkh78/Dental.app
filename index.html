@@ -1299,7 +1299,7 @@
                 </div>
 
                 <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem;">سجل الأعمال المخبرية</h3>
+                    <h3 style="margin-top:0; font-size:1rem;">سجل الأعمال المخبرية (عدّل اللون والتكلفة والتواريخ مباشرة)</h3>
                     <div class="table-wrap" id="lab-table-wrap"></div>
                 </div>
             </div>
@@ -1822,10 +1822,17 @@
             return;
         }
 
+        const oldName = p.name;
         p.name = name;
         p.phone = document.getElementById('ep-phone').value.trim();
         p.age = document.getElementById('ep-age').value.trim();
         p.notes = document.getElementById('ep-notes').value.trim();
+
+        (db.labOrders || []).forEach(l => {
+            if (l.patientUid === p.uid || l.patient === oldName) {
+                l.patient = p.name;
+            }
+        });
 
         saveDB();
         document.getElementById('pf-name').innerText = p.name;
@@ -1834,6 +1841,7 @@
         renderPatientsList();
         renderAppointmentsPage();
         renderTodayAppointments();
+        renderLabOrders();
     }
 
     function openTodaySheetModal() {
@@ -2512,6 +2520,11 @@
         });
     }
 
+    function isLaboratoryTreatment(name) {
+        const labKeywords = ["تتويج", "خزف", "زيركون", "جسر", "تعويض", "فينير", "وجوه", "طقم"];
+        return labKeywords.some(k => String(name || "").includes(k));
+    }
+
     function toggleQuickPaymentBox() {
         const box = document.getElementById('quick-payment-box');
         if (!box) return;
@@ -2715,6 +2728,8 @@
 
         if (!tData.items.some(i => i.name === tt.name)) {
             const itemId = "ti_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+            const linkedKey = `tooth_${selectedToothNum}_${itemId}`;
+
             tData.items.push({
                 id: itemId,
                 name: tt.name,
@@ -2726,14 +2741,30 @@
                 p,
                 `${tt.name} (السن #${selectedToothNum})`,
                 autoPrice,
-                `tooth_${selectedToothNum}_${itemId}`
+                linkedKey
             );
+
+            if (isLaboratoryTreatment(tt.name)) {
+                db.labOrders.unshift({
+                    id: "lab_" + Date.now() + "_" + Math.random().toString(36).slice(2, 4),
+                    patient: p.name,
+                    patientUid: p.uid,
+                    toothNum: selectedToothNum,
+                    type: `${tt.name} (السن #${selectedToothNum})`,
+                    shade: "",
+                    cost: 0,
+                    start: todayStr(),
+                    due: "",
+                    linkedKey: linkedKey
+                });
+            }
         }
 
         p.teeth[selectedToothNum] = tData;
         saveDB();
         renderDentalChart(p);
         renderPatientAccount(p);
+        renderLabOrders();
         selectTooth(selectedToothNum);
     }
 
@@ -2744,6 +2775,7 @@
 
         const targetKey = `tooth_${toothNum}_${itemId}`;
         p.procedures = (p.procedures || []).filter(pr => pr.linkedKey !== targetKey);
+        db.labOrders = (db.labOrders || []).filter(l => l.linkedKey !== targetKey);
 
         if (tData.items.length === 0 && !tData.note) delete p.teeth[toothNum];
         else p.teeth[toothNum] = tData;
@@ -2751,16 +2783,25 @@
         saveDB();
         renderDentalChart(p);
         renderPatientAccount(p);
+        renderLabOrders();
         if (selectedToothNum === toothNum) selectTooth(toothNum);
     }
 
     function clearSelectedToothAll() {
         if (!selectedToothNum) return;
         const p = db.patients.find(x => x.uid === activePatientId);
+        const tData = normalizeToothData(p.teeth[selectedToothNum]);
+        const keysToRemove = tData.items.map(it => `tooth_${selectedToothNum}_${it.id}`);
+        if (keysToRemove.length > 0) {
+            db.labOrders = (db.labOrders || []).filter(l => !keysToRemove.includes(l.linkedKey));
+            p.procedures = (p.procedures || []).filter(pr => !keysToRemove.includes(pr.linkedKey));
+        }
         delete p.teeth[selectedToothNum];
         document.getElementById('te-note').value = '';
         saveDB();
         renderDentalChart(p);
+        renderPatientAccount(p);
+        renderLabOrders();
         selectTooth(selectedToothNum);
     }
 
@@ -3276,21 +3317,55 @@
         renderLabOrders();
     }
 
+    function updateLabOrderField(id, field, value) {
+        const order = db.labOrders.find(l => l.id === id);
+        if (!order) return;
+        order[field] = (field === 'cost') ? (Number(value) || 0) : value;
+        saveDB();
+    }
+
     function renderLabOrders() {
         const wrap = document.getElementById('lab-table-wrap');
         wrap.innerHTML = db.labOrders.length === 0 ? '<p style="font-weight:600; color:var(--text-muted);">لا توجد أعمال مخبرية مسجلة.</p>' : `
             <table>
-                <thead><tr><th>المريض</th><th>نوع العمل</th><th>اللون</th><th>التكلفة</th><th>البدء</th><th>التسليم</th><th></th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>المريض</th>
+                        <th>نوع العمل والسن</th>
+                        <th>اللون (Shade)</th>
+                        <th>التكلفة المخبرية</th>
+                        <th>تاريخ الإرسال</th>
+                        <th>تاريخ التسليم</th>
+                        <th>إدارة</th>
+                    </tr>
+                </thead>
                 <tbody>
                     ${db.labOrders.map(l => `
                         <tr>
                             <td><strong>${l.patient}</strong></td>
-                            <td>${l.type}</td>
-                            <td>${l.shade || '-'}</td>
-                            <td>${Number(l.cost).toLocaleString()}</td>
-                            <td>${formatDateWithDay(l.start)}</td>
-                            <td>${formatDateWithDay(l.due)}</td>
-                            <td><button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteLabOrder('${l.id}')">حذف</button></td>
+                            <td>
+                                <input type="text" class="form-control" style="padding:4px 7px; font-size:0.8rem; min-width:130px;"
+                                    value="${l.type || ''}" onchange="updateLabOrderField('${l.id}', 'type', this.value)">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" style="padding:4px 7px; font-size:0.8rem; width:75px;"
+                                    placeholder="A2" value="${l.shade || ''}" onchange="updateLabOrderField('${l.id}', 'shade', this.value)">
+                            </td>
+                            <td>
+                                <input type="number" class="inline-price-input" style="width:95px;"
+                                    value="${Number(l.cost || 0)}" onchange="updateLabOrderField('${l.id}', 'cost', this.value)">
+                            </td>
+                            <td>
+                                <input type="date" class="form-control" style="padding:4px 6px; font-size:0.78rem; width:125px;"
+                                    value="${l.start || ''}" onchange="updateLabOrderField('${l.id}', 'start', this.value)">
+                            </td>
+                            <td>
+                                <input type="date" class="form-control" style="padding:4px 6px; font-size:0.78rem; width:125px;"
+                                    value="${l.due || ''}" onchange="updateLabOrderField('${l.id}', 'due', this.value)">
+                            </td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteLabOrder('${l.id}')">حذف</button>
+                            </td>
                         </tr>
                     `).join('')}
                 </tbody>
