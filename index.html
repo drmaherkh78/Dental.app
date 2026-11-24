@@ -1352,7 +1352,7 @@
             </div>
 
             <div id="screen-settings" class="screen">
-                <div class="card" style="border-color:var(--accent);">
+                <div class="card" id="license-generator-card" style="display:none; border-color:var(--accent);">
                     <h3 style="margin-top:0; font-size:1rem; color:var(--accent);">🔑 توليد وإدارة أكواد التفعيل (كود لكل جهاز)</h3>
                     <div style="font-size:0.82rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">
                         الأكواد غير المستخدمة المتاحة: <span id="unused-codes-count" style="color:var(--primary-dark);">0</span> |
@@ -1610,6 +1610,18 @@
         db.license.activatedForDevice = db.license.activatedForDevice || "";
     }
 
+    function isMasterOwnerSession() {
+        ensureLicenseStructure();
+        return db.license.activatedCode === "DRMAHER-2026" &&
+               db.license.activatedForDevice === db.license.deviceId;
+    }
+
+    function updateLicenseGeneratorVisibility() {
+        const card = document.getElementById("license-generator-card");
+        if (!card) return;
+        card.style.display = isMasterOwnerSession() ? "block" : "none";
+    }
+
     function checkLicenseAndGate() {
         ensureLicenseStructure();
         document.getElementById("gate-device-id").innerText = db.license.deviceId;
@@ -1622,6 +1634,7 @@
         if (isLicensedOnThisDevice) {
             document.getElementById("activation-gate").style.display = "none";
             document.getElementById("app-shell").style.display = "block";
+            updateLicenseGeneratorVisibility();
             if (db.appPassword) {
                 document.getElementById("lock-screen").style.display = "flex";
             }
@@ -1688,6 +1701,10 @@
     }
 
     function generateBulkActivationCodes() {
+        if (!isMasterOwnerSession()) {
+            alert("غير مسموح لهذه النسخة بتوليد أكواد تفعيل جديدة.");
+            return;
+        }
         ensureLicenseStructure();
         const count = Math.min(1000, Math.max(1, Number(document.getElementById("bulk-code-count").value) || 20));
         const usedOrAvailable = new Set([
@@ -1711,6 +1728,7 @@
     }
 
     function copyBulkCodesText() {
+        if (!isMasterOwnerSession()) return;
         const box = document.getElementById("bulk-codes-output");
         if (!box.value.trim()) return;
         navigator.clipboard.writeText(box.value);
@@ -1718,6 +1736,7 @@
     }
 
     function downloadBulkCodesFile() {
+        if (!isMasterOwnerSession()) return;
         const text = document.getElementById("bulk-codes-output").value;
         if (!text.trim()) return;
         const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
@@ -1728,6 +1747,8 @@
     }
 
     function renderLicenseStatsInSettings() {
+        updateLicenseGeneratorVisibility();
+        if (!isMasterOwnerSession()) return;
         ensureLicenseStructure();
         const unusedCount = db.license.validUnusedCodes.length;
         const usedEntries = Object.entries(db.license.usedCodesMap);
@@ -1834,6 +1855,7 @@
     function renderAll() {
         document.getElementById('active-doc-badge').innerText = db.activeDoctor || "الطبيب";
         document.getElementById('today-header-date').innerText = formatDateWithDay(todayStr());
+        updateLicenseGeneratorVisibility();
         renderTodayAppointments();
         renderPatientsList();
         renderAppointmentsPage();
