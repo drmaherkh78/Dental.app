@@ -971,7 +971,36 @@
                         <strong style="font-size:1.05rem;" id="pf-name"></strong>
                         <div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;" id="pf-meta"></div>
                     </div>
-                    <button class="btn btn-outline btn-sm" onclick="closePatientFile()">⬅️ العودة للمرضى</button>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-accent btn-sm" onclick="toggleEditPatientInfo()">✏️ تعديل البيانات</button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closePatientFile()">⬅️ العودة للمرضى</button>
+                    </div>
+                </div>
+
+                <div id="edit-patient-info-box" class="card" style="display:none; border-color:var(--accent); background:#f8fafc;">
+                    <h4 style="margin:0 0 10px 0; color:var(--accent);">✏️ تعديل بيانات المريض</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>اسم المريض الكامل *</label>
+                            <input type="text" id="ep-name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف (واتساب)</label>
+                            <input type="tel" id="ep-phone" class="form-control" placeholder="09xxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label>العمر</label>
+                            <input type="number" id="ep-age" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات طبية عامة</label>
+                        <input type="text" id="ep-notes" class="form-control">
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn btn-sm" onclick="savePatientInfoEdit()">💾 حفظ التعديلات</button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditPatientInfo()">إلغاء</button>
+                    </div>
                 </div>
 
                 <div class="patient-tabs">
@@ -1766,6 +1795,47 @@
         renderLicenseStatsInSettings();
     }
 
+    function toggleEditPatientInfo() {
+        const box = document.getElementById('edit-patient-info-box');
+        const p = db.patients.find(x => x.uid === activePatientId);
+        if (!box || !p) return;
+
+        if (box.style.display === 'none') {
+            document.getElementById('ep-name').value = p.name || '';
+            document.getElementById('ep-phone').value = p.phone || '';
+            document.getElementById('ep-age').value = p.age || '';
+            document.getElementById('ep-notes').value = p.notes || '';
+            box.style.display = 'block';
+            document.getElementById('ep-phone').focus();
+        } else {
+            box.style.display = 'none';
+        }
+    }
+
+    function savePatientInfoEdit() {
+        const p = db.patients.find(x => x.uid === activePatientId);
+        if (!p) return;
+
+        const name = document.getElementById('ep-name').value.trim();
+        if (!name) {
+            alert("اسم المريض لا يمكن أن يكون فارغاً.");
+            return;
+        }
+
+        p.name = name;
+        p.phone = document.getElementById('ep-phone').value.trim();
+        p.age = document.getElementById('ep-age').value.trim();
+        p.notes = document.getElementById('ep-notes').value.trim();
+
+        saveDB();
+        document.getElementById('pf-name').innerText = p.name;
+        document.getElementById('pf-meta').innerText = `الهاتف: ${p.phone || 'غير مسجل'} | العمر: ${p.age || '-'} | ملاحظات: ${p.notes || 'لا يوجد'}`;
+        document.getElementById('edit-patient-info-box').style.display = 'none';
+        renderPatientsList();
+        renderAppointmentsPage();
+        renderTodayAppointments();
+    }
+
     function openTodaySheetModal() {
         modalDateStr = todayStr();
         renderModalScheduleSheet();
@@ -2367,6 +2437,7 @@
         document.getElementById('pf-id-badge').innerText = `ملف #${p.fileId}`;
         document.getElementById('pf-name').innerText = p.name;
         document.getElementById('pf-meta').innerText = `الهاتف: ${p.phone || 'غير مسجل'} | العمر: ${p.age || '-'} | ملاحظات: ${p.notes || 'لا يوجد'}`;
+        document.getElementById('edit-patient-info-box').style.display = 'none';
 
         document.getElementById('pf-plan-text').value = p.planText || '';
         document.getElementById('pf-next-step').value = p.nextStep || '';
