@@ -774,7 +774,6 @@
 </head>
 <body>
 
-    <!-- بوابة التفعيل الإلزامية بكود مرتبط بجهاز واحد -->
     <div id="activation-gate">
         <div class="gate-box">
             <h2 style="margin:0 0 6px 0; color:var(--primary-dark);">🔑 تفعيل التطبيق بكود</h2>
@@ -863,7 +862,6 @@
                 </div>
             </div>
 
-            <!-- 1. الصفحة الرئيسية: مواعيد اليوم + المرضى -->
             <div id="screen-patients" class="screen active">
 
                 <div class="card" id="today-appointments-card">
@@ -914,7 +912,6 @@
                 <div id="patients-list"></div>
             </div>
 
-            <!-- صفحة المواعيد -->
             <div id="screen-appointments" class="screen">
                 <button type="button" class="today-banner-btn" onclick="openTodaySheetModal()">
                     <span>📅 مواعيد اليوم (جدول سريع + تنقل الأيام)</span>
@@ -967,7 +964,6 @@
                 </div>
             </div>
 
-            <!-- 2. شاشة ملف المريض المستقل -->
             <div id="screen-patient-file" class="screen">
                 <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#f8fafc;">
                     <div>
@@ -986,8 +982,40 @@
                     <button class="p-tab" id="ptab-appt" onclick="switchPatientTab('appt')">📅 الموعد وواتساب</button>
                 </div>
 
-                <!-- تبويب 1: مخطط الأسنان -->
                 <div id="pview-teeth" class="pview">
+                    <div class="card" style="background:#f8fafc; border-color:var(--primary);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                            <strong style="font-size:0.92rem; color:var(--primary-dark);">💰 ملخص حساب المريض</strong>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                <button type="button" class="btn btn-success btn-sm" onclick="toggleQuickPaymentBox()">💵 تسجيل دفعة</button>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="switchPatientTab('account')">📋 تفاصيل الحساب الكاملة</button>
+                            </div>
+                        </div>
+
+                        <div class="grid-3">
+                            <div class="stat-card"><span>إجمالي المعالجات</span><strong id="top-acc-total">0</strong></div>
+                            <div class="stat-card"><span>إجمالي المدفوعات</span><strong id="top-acc-paid" style="color:var(--success);">0</strong></div>
+                            <div class="stat-card"><span>المتبقي (المطلوب)</span><strong id="top-acc-rem" style="color:var(--danger);">0</strong></div>
+                        </div>
+
+                        <div id="quick-payment-box" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);">
+                            <div class="grid-3">
+                                <div class="form-group" style="margin-bottom:6px;">
+                                    <label>المبلغ المدفوع</label>
+                                    <input type="number" id="quick-pay-amount" class="form-control" placeholder="أدخل المبلغ">
+                                </div>
+                                <div class="form-group" style="margin-bottom:6px;">
+                                    <label>ملاحظة (اختياري)</label>
+                                    <input type="text" id="quick-pay-note" class="form-control" placeholder="دفعة نقدية...">
+                                </div>
+                                <div class="form-group" style="margin-bottom:6px; display:flex; align-items:flex-end; gap:6px;">
+                                    <button type="button" class="btn btn-success btn-sm" style="flex:1;" onclick="addQuickPaymentFromFirstPage()">💾 حفظ الدفعة</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="toggleQuickPaymentBox()">إلغاء</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
                             <strong style="font-size:0.92rem;">مخطط الأسنان</strong>
@@ -1064,7 +1092,6 @@
                     </div>
                 </div>
 
-                <!-- تبويب 2: خطة المعالجة وإجراءات الجلسة القادمة -->
                 <div id="pview-plan" class="pview" style="display:none;">
                     <div class="card">
                         <div class="form-group">
@@ -1079,7 +1106,6 @@
                     </div>
                 </div>
 
-                <!-- تبويب 3: الجلسات والحساب الآلي + الطباعة -->
                 <div id="pview-account" class="pview" style="display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
                         <div class="form-group" style="margin:0; min-width:200px;">
@@ -1170,7 +1196,6 @@
                     </div>
                 </div>
 
-                <!-- تبويب 4: الصور الشعاعية والفموية -->
                 <div id="pview-photos" class="pview" style="display:none;">
                     <div class="card">
                         <h4 style="margin:0 0 10px 0;">إضافة صورة شعاعية أو فموية</h4>
@@ -1189,7 +1214,6 @@
                     </div>
                 </div>
 
-                <!-- تبويب 5: المواعيد وواتساب -->
                 <div id="pview-appt" class="pview" style="display:none;">
                     <div class="card">
                         <h4 style="margin:0 0 10px 0;">تحديد الموعد القادم والتذكير عبر واتساب</h4>
@@ -1211,7 +1235,6 @@
                 </div>
             </div>
 
-            <!-- 3. شاشة العمل المخبري العام -->
             <div id="screen-lab" class="screen">
                 <div class="card">
                     <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">🔬 تسجيل عمل مخبري جديد</h3>
@@ -1252,7 +1275,6 @@
                 </div>
             </div>
 
-            <!-- 4. شاشة الإيرادات والمحاسبة العامة -->
             <div id="screen-finance" class="screen">
                 <div class="grid-3" style="margin-bottom:12px;">
                     <div class="stat-card"><span>إيراد اليوم</span><strong id="fin-day">0</strong></div>
@@ -1300,7 +1322,6 @@
                 </div>
             </div>
 
-            <!-- 5. شاشة الإعدادات -->
             <div id="screen-settings" class="screen">
                 <div class="card" style="border-color:var(--accent);">
                     <h3 style="margin-top:0; font-size:1rem; color:var(--accent);">🔑 توليد وإدارة أكواد التفعيل (كود لكل جهاز)</h3>
@@ -1542,11 +1563,11 @@
             errEl.innerText = "يرجى إدخال كود التفعيل.";
             return;
         }
-             const masterCode = "DRMAHER-2026";
-        if (code === masterCode.toUpperCase()) {
-            db.license.usedCodesMap[code] = db.license.deviceId;
+
+        if (code === "DRMAHER-2026") {
             db.license.activatedCode = code;
             db.license.activatedForDevice = db.license.deviceId;
+            db.license.usedCodesMap[code] = db.license.deviceId;
             saveDB();
             checkLicenseAndGate();
             return;
@@ -2359,6 +2380,7 @@
         paletteEditingTargetId = null;
         document.getElementById('palette-editor-panel').style.display = 'none';
         document.getElementById('account-fee-editor').style.display = 'none';
+        document.getElementById('quick-payment-box').style.display = 'none';
 
         populateDoctorsSelect();
         populateFeesSelect();
@@ -2394,6 +2416,61 @@
             }
             ${secondColor ? `<circle cx="17.5" cy="${isLower ? 22.5 : 9.5}" r="3.2" fill="${secondColor}" stroke="#020617" stroke-width="1.1"/>` : ''}
         </svg>`;
+    }
+
+    function findFeePriceByTreatmentName(name) {
+        const clean = String(name || "").trim();
+        let found = db.feeItems.find(f => f.name.trim() === clean);
+        if (!found && clean === "حشوة") {
+            found = db.feeItems.find(f => f.name.trim().includes("حشوة"));
+        }
+        if (!found && clean.includes("قلع")) {
+            found = db.feeItems.find(f => f.name.trim().includes("قلع"));
+        }
+        return found ? Number(found.price || 0) : 0;
+    }
+
+    function addAutoProcedureForPatient(p, desc, cost, linkedKey) {
+        p.procedures.push({
+            id: "pr_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+            desc,
+            cost: Number(cost) || 0,
+            date: todayStr(),
+            doctor: db.activeDoctor || "الطبيب",
+            linkedKey: linkedKey || ""
+        });
+    }
+
+    function toggleQuickPaymentBox() {
+        const box = document.getElementById('quick-payment-box');
+        if (!box) return;
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        if (box.style.display === 'block') {
+            document.getElementById('quick-pay-amount').focus();
+        }
+    }
+
+    function addQuickPaymentFromFirstPage() {
+        const amount = Number(document.getElementById('quick-pay-amount').value) || 0;
+        const note = document.getElementById('quick-pay-note').value.trim();
+        if (amount <= 0) {
+            alert("يرجى إدخال مبلغ صحيح.");
+            return;
+        }
+        const p = db.patients.find(x => x.uid === activePatientId);
+        if (!p) return;
+
+        p.payments.push({
+            id: "py_" + Date.now(),
+            amount,
+            date: todayStr(),
+            note
+        });
+        saveDB();
+        document.getElementById('quick-pay-amount').value = '';
+        document.getElementById('quick-pay-note').value = '';
+        document.getElementById('quick-payment-box').style.display = 'none';
+        renderPatientAccount(p);
     }
 
     function openPaletteAddForm() {
@@ -2566,16 +2643,26 @@
         const tData = normalizeToothData(p.teeth[selectedToothNum]);
 
         if (!tData.items.some(i => i.name === tt.name)) {
+            const itemId = "ti_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
             tData.items.push({
-                id: "ti_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+                id: itemId,
                 name: tt.name,
                 color: tt.color
             });
+
+            const autoPrice = findFeePriceByTreatmentName(tt.name);
+            addAutoProcedureForPatient(
+                p,
+                `${tt.name} (السن #${selectedToothNum})`,
+                autoPrice,
+                `tooth_${selectedToothNum}_${itemId}`
+            );
         }
 
         p.teeth[selectedToothNum] = tData;
         saveDB();
         renderDentalChart(p);
+        renderPatientAccount(p);
         selectTooth(selectedToothNum);
     }
 
@@ -2584,11 +2671,15 @@
         const tData = normalizeToothData(p.teeth[toothNum]);
         tData.items = tData.items.filter(i => i.id !== itemId);
 
+        const targetKey = `tooth_${toothNum}_${itemId}`;
+        p.procedures = (p.procedures || []).filter(pr => pr.linkedKey !== targetKey);
+
         if (tData.items.length === 0 && !tData.note) delete p.teeth[toothNum];
         else p.teeth[toothNum] = tData;
 
         saveDB();
         renderDentalChart(p);
+        renderPatientAccount(p);
         if (selectedToothNum === toothNum) selectTooth(toothNum);
     }
 
@@ -2619,8 +2710,11 @@
     function addCleaningSession() {
         const p = db.patients.find(x => x.uid === activePatientId);
         p.cleaningSessions = (p.cleaningSessions || 0) + 1;
+        const price = findFeePriceByTreatmentName("جلسة تنظيف أسنان");
+        addAutoProcedureForPatient(p, "جلسة تنظيف أسنان", price, "cleaning_session");
         saveDB();
         renderDentalChart(p);
+        renderPatientAccount(p);
     }
 
     function resetCleaningSessions() {
@@ -2633,6 +2727,10 @@
     function toggleOrthoArch(mode) {
         const p = db.patients.find(x => x.uid === activePatientId);
         if (!p.orthoFixed) p.orthoFixed = { upper: false, lower: false };
+        const wasActive = (mode === 'upper' && p.orthoFixed.upper) ||
+                          (mode === 'lower' && p.orthoFixed.lower) ||
+                          (mode === 'both' && p.orthoFixed.upper && p.orthoFixed.lower);
+
         if (mode === 'upper') p.orthoFixed.upper = !p.orthoFixed.upper;
         else if (mode === 'lower') p.orthoFixed.lower = !p.orthoFixed.lower;
         else if (mode === 'both') {
@@ -2640,17 +2738,42 @@
             p.orthoFixed.upper = nextState;
             p.orthoFixed.lower = nextState;
         }
+
+        if (!wasActive) {
+            const labelMap = {
+                upper: "تقويم أسنان ثابت علوي",
+                lower: "تقويم أسنان ثابت سفلي",
+                both: "تقويم أسنان ثابت فكين"
+            };
+            const price = findFeePriceByTreatmentName("تقويم أسنان");
+            addAutoProcedureForPatient(p, labelMap[mode], price, `ortho_${mode}`);
+        }
+
         saveDB();
         renderDentalChart(p);
+        renderPatientAccount(p);
     }
 
     function cycleRemovableAppliance() {
         const p = db.patients.find(x => x.uid === activePatientId);
         const order = ["none", "upper", "lower", "both"];
         const idx = order.indexOf(p.removableAppliance || "none");
-        p.removableAppliance = order[(idx + 1) % order.length];
+        const nextVal = order[(idx + 1) % order.length];
+        p.removableAppliance = nextVal;
+
+        if (nextVal !== "none") {
+            const remNames = {
+                upper: "جهاز تقويم متحرك علوي",
+                lower: "جهاز تقويم متحرك سفلي",
+                both: "جهاز تقويم متحرك فكين"
+            };
+            const price = findFeePriceByTreatmentName("تقويم أسنان");
+            addAutoProcedureForPatient(p, remNames[nextVal], price, `rem_${nextVal}`);
+        }
+
         saveDB();
         renderDentalChart(p);
+        renderPatientAccount(p);
     }
 
     function renderDentalChart(p) {
@@ -2914,6 +3037,13 @@
         document.getElementById('acc-total').innerText = bal.total.toLocaleString();
         document.getElementById('acc-paid').innerText = bal.paid.toLocaleString();
         document.getElementById('acc-rem').innerText = bal.rem.toLocaleString();
+
+        const topTotalEl = document.getElementById('top-acc-total');
+        const topPaidEl = document.getElementById('top-acc-paid');
+        const topRemEl = document.getElementById('top-acc-rem');
+        if (topTotalEl) topTotalEl.innerText = bal.total.toLocaleString();
+        if (topPaidEl) topPaidEl.innerText = bal.paid.toLocaleString();
+        if (topRemEl) topRemEl.innerText = bal.rem.toLocaleString();
 
         let rows = [];
         (p.procedures || []).forEach(pr => rows.push({
