@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إدارة عيادة الأسنان | v1.13</title>
+    <title>إدارة عيادة الأسنان | v1.14</title>
     <style>
         :root {
             --bg-main: #f1f5f9;
@@ -677,7 +677,7 @@
     </div>
 
     <header class="top-bar">
-        <h1>🦷 إدارة عيادة الأسنان <span class="ver-pill">v1.13</span></h1>
+        <h1>🦷 إدارة عيادة الأسنان <span class="ver-pill">v1.14</span></h1>
         <div style="display:flex; align-items:center; gap:8px;">
             <span id="active-doc-badge" style="font-size:0.75rem; background:rgba(255,255,255,0.18); padding:3px 9px; border-radius:12px;">د. ماهر خليل</span>
             <button class="btn btn-outline btn-sm" id="lock-now-btn" style="display:none;" onclick="lockAppNow()">🔒 قفل</button>
@@ -808,7 +808,7 @@
             </div>
         </div>
 
-        <!-- 2. شاشة ملف المريض المستقل (مدمجة بنفس تصميم البطاقة) -->
+        <!-- 2. شاشة ملف المريض المستقل -->
         <div id="screen-patient-file" class="screen">
             <div class="card pf-header-card">
                 <div>
@@ -1269,6 +1269,7 @@
     ];
 
     const arabicDays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    const PRIMARY_STORAGE_KEY = 'dr_maher_clinic_db_v19';
 
     function buildTimeSlots10AmTo10Pm() {
         const slots = [];
@@ -1360,30 +1361,126 @@
         document.getElementById('appt-time').innerHTML = optsHtml;
     }
 
-    function loadDB() {
-        const saved = localStorage.getItem('dr_maher_clinic_db_v19');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                db = { ...db, ...parsed };
-            } catch (e) {}
-            if (!Array.isArray(db.patients)) db.patients = [];
-            if (!Array.isArray(db.labOrders)) db.labOrders = [];
-            if (!Array.isArray(db.generalFinance)) db.generalFinance = [];
-            if (!Array.isArray(db.treatmentTypes) || db.treatmentTypes.length === 0) db.treatmentTypes = [...defaultTreatmentTypes];
-            if (!Array.isArray(db.feeItems) || db.feeItems.length === 0) {
-                db.feeItems = [...defaultFeeItems];
+    function mergePatientsArrays(baseList, incomingList) {
+        const map = new Map();
+        (baseList || []).forEach(p => {
+            if (!p) return;
+            const key = p.uid || `${p.fileId || ''}__${(p.name || '').trim()}`;
+            map.set(key, { ...p });
+        });
+
+        (incomingList || []).forEach(p => {
+            if (!p || !p.name) return;
+            const byUid = p.uid ? Array.from(map.values()).find(x => x.uid === p.uid) : null;
+            const byIdAndName = Array.from(map.values()).find(x =>
+                String(x.fileId || '') === String(p.fileId || '') &&
+                String(x.name || '').trim() === String(p.name || '').trim()
+            );
+            const existing = byUid || byIdAndName;
+            if (!existing) {
+                const key = p.uid || `imp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+                map.set(key, { ...p });
             } else {
-                db.feeItems = db.feeItems.map(f => ({
-                    ...f,
-                    category: f.category || "مداواة تحفظية (حشوات)"
-                }));
+                existing.procedures = (existing.procedures && existing.procedures.length) ? existing.procedures : (p.procedures || []);
+                existing.payments = (existing.payments && existing.payments.length) ? existing.payments : (p.payments || []);
+                existing.teeth = (existing.teeth && Object.keys(existing.teeth).length) ? existing.teeth : (p.teeth || {});
+                existing.photos = (existing.photos && existing.photos.length) ? existing.photos : (p.photos || []);
+                if (!existing.appointment?.date && p.appointment?.date) existing.appointment = p.appointment;
+                if (!existing.phone && p.phone) existing.phone = p.phone;
+                if (!existing.notes && p.notes) existing.notes = p.notes;
+                if (!existing.planText && p.planText) existing.planText = p.planText;
+                if (!existing.nextStep && p.nextStep) existing.nextStep = p.nextStep;
             }
-            if (!Array.isArray(db.doctors) || db.doctors.length === 0) db.doctors = ["د. ماهر خليل"];
-            if (!db.activeDoctor) db.activeDoctor = db.doctors[0];
-        } else {
-            saveDB();
+        });
+
+        return Array.from(map.values());
+    }
+
+    function recoverFromAllLocalStorageKeys() {
+        let merged = {
+            patients: [],
+            labOrders: [],
+            generalFinance: [],
+            treatmentTypes: null,
+            feeItems: null,
+            doctors: null,
+            activeDoctor: null,
+            appPassword: ""
+        };
+
+        const candidateKeys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (!k) continue;
+            if (k === PRIMARY_STORAGE_KEY || /maher|clinic|dental|patient|dr_/i.test(k)) {
+                candidateKeys.push(k);
+            }
         }
+
+        if (!candidateKeys.includes(PRIMARY_STORAGE_KEY) && localStorage.getItem(PRIMARY_STORAGE_KEY)) {
+            candidateKeys.unshift(PRIMARY_STORAGE_KEY);
+        }
+
+        candidateKeys.forEach(key => {
+            const raw = localStorage.getItem(key);
+            if (!raw) return;
+            try {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    merged.patients = mergePatientsArrays(merged.patients, parsed);
+                } else if (parsed && typeof parsed === 'object') {
+                    if (Array.isArray(parsed.patients)) {
+                        merged.patients = mergePatientsArrays(merged.patients, parsed.patients);
+                    }
+                    if (Array.isArray(parsed.labOrders)) {
+                        const existingLabIds = new Set(merged.labOrders.map(x => x.id));
+                        parsed.labOrders.forEach(l => {
+                            if (l && (!l.id || !existingLabIds.has(l.id))) merged.labOrders.push(l);
+                        });
+                    }
+                    if (Array.isArray(parsed.generalFinance)) {
+                        const existingFinIds = new Set(merged.generalFinance.map(x => x.id));
+                        parsed.generalFinance.forEach(f => {
+                            if (f && (!f.id || !existingFinIds.has(f.id))) merged.generalFinance.push(f);
+                        });
+                    }
+                    if (Array.isArray(parsed.treatmentTypes) && parsed.treatmentTypes.length > 0) {
+                        merged.treatmentTypes = parsed.treatmentTypes;
+                    }
+                    if (Array.isArray(parsed.feeItems) && parsed.feeItems.length > 0) {
+                        merged.feeItems = parsed.feeItems;
+                    }
+                    if (Array.isArray(parsed.doctors) && parsed.doctors.length > 0) {
+                        merged.doctors = parsed.doctors;
+                    }
+                    if (parsed.activeDoctor) merged.activeDoctor = parsed.activeDoctor;
+                    if (parsed.appPassword) merged.appPassword = parsed.appPassword;
+                }
+            } catch (e) {}
+        });
+
+        return merged;
+    }
+
+    function loadDB() {
+        const recovered = recoverFromAllLocalStorageKeys();
+        db = {
+            ...db,
+            patients: recovered.patients,
+            labOrders: recovered.labOrders,
+            generalFinance: recovered.generalFinance,
+            treatmentTypes: recovered.treatmentTypes || [...defaultTreatmentTypes],
+            feeItems: (recovered.feeItems || [...defaultFeeItems]).map(f => ({
+                ...f,
+                category: f.category || "مداواة تحفظية (حشوات)"
+            })),
+            doctors: recovered.doctors || ["د. ماهر خليل"],
+            activeDoctor: recovered.activeDoctor || (recovered.doctors ? recovered.doctors[0] : "د. ماهر خليل"),
+            appPassword: recovered.appPassword || ""
+        };
+
+        saveDB();
+
         document.getElementById('proc-date').value = todayStr();
         document.getElementById('pay-date').value = todayStr();
         document.getElementById('lab-start').value = todayStr();
@@ -1400,7 +1497,7 @@
     }
 
     function saveDB() {
-        localStorage.setItem('dr_maher_clinic_db_v19', JSON.stringify(db));
+        localStorage.setItem(PRIMARY_STORAGE_KEY, JSON.stringify(db));
     }
 
     function renderAll() {
@@ -1813,12 +1910,12 @@
 
         const filtered = db.patients.filter(p =>
             p.name.toLowerCase().includes(q) ||
-            p.fileId.toLowerCase().includes(q) ||
+            String(p.fileId || '').toLowerCase().includes(q) ||
             (p.phone && p.phone.includes(q))
         );
 
         if (filtered.length === 0) {
-            container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted);">لا يوجد مرضى مطابقون. اضغط على "+ مريض جديد" لفتح ملف.</div>`;
+            container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted);">لا يوجد مرضى مطابقون. اضغط على "+ مريض جديد" لفتح ملف أو استورد نسخة احتياطية من الإعدادات.</div>`;
             return;
         }
 
@@ -2808,7 +2905,7 @@
                     db = {
                         ...db,
                         ...imported,
-                        patients: Array.isArray(imported.patients) ? imported.patients : db.patients,
+                        patients: mergePatientsArrays(db.patients, Array.isArray(imported.patients) ? imported.patients : []),
                         labOrders: Array.isArray(imported.labOrders) ? imported.labOrders : db.labOrders,
                         generalFinance: Array.isArray(imported.generalFinance) ? imported.generalFinance : db.generalFinance,
                         treatmentTypes: Array.isArray(imported.treatmentTypes) && imported.treatmentTypes.length > 0 ? imported.treatmentTypes : db.treatmentTypes,
@@ -2818,7 +2915,7 @@
                     saveDB();
                     updatePasswordUI();
                     renderAll();
-                    alert("✅ تم استيراد البيانات بنجاح.");
+                    alert("✅ تم استيراد ودمج البيانات بنجاح.");
                 } else {
                     alert("❌ محتوى الملف غير متوافق.");
                 }
