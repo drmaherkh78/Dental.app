@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>عيادة الدكتور ماهر خليل | v2.1</title>
+    <title>إدارة عيادة الأسنان | v1.13</title>
     <style>
         :root {
             --bg-main: #f1f5f9;
@@ -293,10 +293,10 @@
 
         .upcoming-appt-banner {
             margin-top: 8px;
-            padding: 7px 10px;
+            padding: 7px 11px;
             border-radius: 9px;
             font-size: 0.82rem;
-            font-weight: 600;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -313,6 +313,21 @@
             background: #f8fafc;
             color: var(--text-muted);
             border: 1px dashed #cbd5e1;
+        }
+
+        .pf-header-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pf-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .patient-quick-preview {
@@ -351,12 +366,6 @@
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
-        }
-
-        .p-tab-add {
-            background: #ecfdf5;
-            color: #065f46;
-            border: 1px solid #34d399;
         }
 
         .dental-chart-box {
@@ -659,7 +668,7 @@
 
     <div id="lock-screen">
         <div class="lock-box">
-            <h2 style="margin:0 0 6px 0; color:var(--primary-dark);">🔒 عيادة د. ماهر خليل</h2>
+            <h2 style="margin:0 0 6px 0; color:var(--primary-dark);">🔒 إدارة عيادة الأسنان</h2>
             <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">أدخل كلمة المرور للدخول إلى النظام</p>
             <input type="password" id="unlock-pass-input" class="form-control" style="margin-bottom:10px; text-align:center;" placeholder="كلمة المرور">
             <button class="btn" style="width:100%;" onclick="unlockApp()">دخول</button>
@@ -668,7 +677,7 @@
     </div>
 
     <header class="top-bar">
-        <h1>🦷 عيادة الدكتور ماهر خليل <span class="ver-pill">v2.1</span></h1>
+        <h1>🦷 إدارة عيادة الأسنان <span class="ver-pill">v1.13</span></h1>
         <div style="display:flex; align-items:center; gap:8px;">
             <span id="active-doc-badge" style="font-size:0.75rem; background:rgba(255,255,255,0.18); padding:3px 9px; border-radius:12px;">د. ماهر خليل</span>
             <button class="btn btn-outline btn-sm" id="lock-now-btn" style="display:none;" onclick="lockAppNow()">🔒 قفل</button>
@@ -799,29 +808,73 @@
             </div>
         </div>
 
-        <!-- 2. شاشة ملف المريض المستقل -->
+        <!-- 2. شاشة ملف المريض المستقل (مدمجة بنفس تصميم البطاقة) -->
         <div id="screen-patient-file" class="screen">
-            <div class="card" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; background:#f8fafc;">
+            <div class="card pf-header-card">
                 <div>
                     <span class="patient-id-badge" id="pf-id-badge"></span>
                     <strong style="font-size:1.05rem;" id="pf-name"></strong>
                     <div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;" id="pf-meta"></div>
                     <div id="pf-next-appt-badge" class="upcoming-appt-banner no-appt">📅 لا يوجد موعد قادم مسجل</div>
                 </div>
-                <button class="btn btn-outline btn-sm" onclick="closePatientFile()">⬅️ العودة للمرضى</button>
+                <div class="pf-header-actions">
+                    <button type="button" class="btn btn-success btn-sm" onclick="openAddAppointmentInFile()">➕ إضافة موعد</button>
+                    <button type="button" class="btn btn-accent btn-sm" onclick="toggleEditPatientInfo()">✏️ تعديل البيانات</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="closePatientFile()">⬅️ العودة للمرضى</button>
+                </div>
+            </div>
+
+            <div id="edit-patient-box" class="card" style="display:none; border-color:var(--accent);">
+                <h4 style="margin:0 0 10px 0; color:var(--accent);">تعديل بيانات المريض</h4>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>الاسم الكامل</label>
+                        <input type="text" id="ep-name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" id="ep-phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>العمر</label>
+                        <input type="number" id="ep-age" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ملاحظات طبية</label>
+                    <input type="text" id="ep-notes" class="form-control">
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn btn-sm" onclick="savePatientInfoEdits()">💾 حفظ التعديلات</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditPatientInfo()">إلغاء</button>
+                </div>
             </div>
 
             <div class="patient-tabs">
-                <button class="p-tab active" id="ptab-teeth" onclick="switchPatientTab('teeth')">🦷 مخطط الأسنان</button>
-                <button class="p-tab" id="ptab-plan" onclick="switchPatientTab('plan')">📋 خطة المعالجة والقادم</button>
-                <button class="p-tab" id="ptab-account" onclick="switchPatientTab('account')">💰 الجلسات والحساب</button>
-                <button class="p-tab" id="ptab-photos" onclick="switchPatientTab('photos')">🩻 الصور الشعاعية والفموية</button>
-                <button class="p-tab" id="ptab-appt" onclick="switchPatientTab('appt')">📅 الموعد وواتساب</button>
-                <button type="button" class="p-tab p-tab-add" onclick="openAddAppointmentInFile()">➕ إضافة موعد</button>
+                <button type="button" class="p-tab active" id="ptab-teeth" onclick="switchPatientTab('teeth')">🦷 مخطط الأسنان</button>
+                <button type="button" class="p-tab" id="ptab-plan" onclick="switchPatientTab('plan')">📋 خطة المعالجة والقادم</button>
+                <button type="button" class="p-tab" id="ptab-account" onclick="switchPatientTab('account')">💰 الجلسات والحساب</button>
+                <button type="button" class="p-tab" id="ptab-photos" onclick="switchPatientTab('photos')">🩻 الصور الشعاعية والفموية</button>
+                <button type="button" class="p-tab" id="ptab-appt" onclick="switchPatientTab('appt')">📅 الموعد وواتساب</button>
             </div>
 
-            <!-- تبويب 1: مخطط الأسنان -->
+            <!-- تبويب 1: مخطط الأسنان + ملخص حساب المريض -->
             <div id="pview-teeth" class="pview">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                        <strong style="font-size:0.95rem; color:var(--primary-dark);">💰 ملخص حساب المريض</strong>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <button type="button" class="btn btn-success btn-sm" onclick="jumpToQuickPayment()">💵 تسجيل دفعة</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="switchPatientTab('account')">📋 تفاصيل الحساب الكاملة</button>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div class="stat-card"><span>إجمالي المعالجات</span><strong id="sum-total">0</strong></div>
+                        <div class="stat-card"><span>إجمالي المدفوعات</span><strong id="sum-paid" style="color:var(--success);">0</strong></div>
+                        <div class="stat-card"><span>المتبقي (المطلوب)</span><strong id="sum-rem" style="color:var(--danger);">0</strong></div>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
                         <strong style="font-size:0.92rem;">مخطط الأسنان</strong>
@@ -932,7 +985,7 @@
                     <button class="btn btn-sm" onclick="addProcedure()">إضافة إلى سجل الجلسات والحساب</button>
                 </div>
 
-                <div class="card">
+                <div class="card" id="payment-form-card">
                     <h4 style="margin:0 0 10px 0; color:var(--success);">💵 تسجيل دفعة مالية من المريض</h4>
                     <div class="grid-3">
                         <div class="form-group">
@@ -1363,7 +1416,11 @@
         renderDoctorsSettings();
         if (activePatientId) {
             const p = db.patients.find(x => x.uid === activePatientId);
-            if (p) renderPatientAppointmentBanner(p);
+            if (p) {
+                renderPatientHeaderMeta(p);
+                renderPatientAppointmentBanner(p);
+                renderPatientAccount(p);
+            }
         }
     }
 
@@ -1817,6 +1874,45 @@
         renderAll();
     }
 
+    function renderPatientHeaderMeta(p) {
+        document.getElementById('pf-id-badge').innerText = `ملف #${p.fileId}`;
+        document.getElementById('pf-name').innerText = p.name;
+        document.getElementById('pf-meta').innerText = `الهاتف: ${p.phone || 'غير مسجل'} | العمر: ${p.age || '-'} | ملاحظات: ${p.notes || 'لا يوجد'}`;
+    }
+
+    function toggleEditPatientInfo() {
+        const box = document.getElementById('edit-patient-box');
+        if (!activePatientId) return;
+        const p = db.patients.find(x => x.uid === activePatientId);
+        if (!p) return;
+
+        if (box.style.display === 'none') {
+            document.getElementById('ep-name').value = p.name || '';
+            document.getElementById('ep-phone').value = p.phone || '';
+            document.getElementById('ep-age').value = p.age || '';
+            document.getElementById('ep-notes').value = p.notes || '';
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    }
+
+    function savePatientInfoEdits() {
+        const p = db.patients.find(x => x.uid === activePatientId);
+        if (!p) return;
+        const newName = document.getElementById('ep-name').value.trim();
+        if (!newName) { alert("يرجى إدخال اسم المريض."); return; }
+
+        p.name = newName;
+        p.phone = document.getElementById('ep-phone').value.trim();
+        p.age = document.getElementById('ep-age').value.trim();
+        p.notes = document.getElementById('ep-notes').value.trim();
+
+        saveDB();
+        document.getElementById('edit-patient-box').style.display = 'none';
+        renderAll();
+    }
+
     function renderPatientAppointmentBanner(p) {
         const badgeEl = document.getElementById('pf-next-appt-badge');
         const infoEl = document.getElementById('pview-appt-current-info');
@@ -1847,10 +1943,9 @@
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('main-nav').style.display = 'none';
         document.getElementById('screen-patient-file').classList.add('active');
+        document.getElementById('edit-patient-box').style.display = 'none';
 
-        document.getElementById('pf-id-badge').innerText = `ملف #${p.fileId}`;
-        document.getElementById('pf-name').innerText = p.name;
-        document.getElementById('pf-meta').innerText = `الهاتف: ${p.phone || 'غير مسجل'} | العمر: ${p.age || '-'} | ملاحظات: ${p.notes || 'لا يوجد'}`;
+        renderPatientHeaderMeta(p);
         renderPatientAppointmentBanner(p);
 
         document.getElementById('pf-plan-text').value = p.planText || '';
@@ -1882,6 +1977,14 @@
         }
         renderPatientAppointmentBanner(p);
         switchPatientTab('appt');
+    }
+
+    function jumpToQuickPayment() {
+        switchPatientTab('account');
+        setTimeout(() => {
+            const inp = document.getElementById('pay-amount');
+            if (inp) inp.focus();
+        }, 60);
     }
 
     function closePatientFile() {
@@ -2209,6 +2312,10 @@
         document.getElementById('acc-total').innerText = bal.total.toLocaleString();
         document.getElementById('acc-paid').innerText = bal.paid.toLocaleString();
         document.getElementById('acc-rem').innerText = bal.rem.toLocaleString();
+
+        document.getElementById('sum-total').innerText = bal.total.toLocaleString();
+        document.getElementById('sum-paid').innerText = bal.paid.toLocaleString();
+        document.getElementById('sum-rem').innerText = bal.rem.toLocaleString();
 
         let rows = [];
         (p.procedures || []).forEach(pr => rows.push({
