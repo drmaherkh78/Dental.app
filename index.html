@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إدارة عيادة الأسنان</title>
-    <link rel="manifest" href="manifest.json">
+    <title>عيادة الدكتور ماهر خليل | v2.1</title>
     <style>
         :root {
             --bg-main: #f1f5f9;
@@ -16,9 +15,9 @@
             --success: #16a34a;
             --warning: #d97706;
             --danger: #dc2626;
-            --text-dark: #020617;
-            --text-muted: #334155;
-            --border: #cbd5e1;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
         }
 
         * {
@@ -33,41 +32,6 @@
             margin: 0;
             padding: 0 0 40px 0;
             line-height: 1.5;
-            font-weight: 500;
-        }
-
-        #activation-gate {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #0f172a 0%, var(--primary-dark) 100%);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-
-        .gate-box {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px;
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-            border: 1px solid var(--border);
-        }
-
-        .device-pill {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 8px 10px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 12px;
-            word-break: break-all;
         }
 
         #lock-screen {
@@ -110,15 +74,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700;
         }
 
         .ver-pill {
-            background: rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.2);
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 0.72rem;
-            font-weight: 700;
         }
 
         .container {
@@ -146,20 +108,18 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            color: var(--text-dark);
-            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .nav-tile.active {
             border-color: var(--primary);
             background: var(--primary-light);
             color: var(--primary-dark);
-            font-weight: 700;
+            font-weight: bold;
         }
 
         .nav-tile-icon { font-size: 1.25rem; display: block; margin-bottom: 2px; }
-        .nav-tile-label { font-size: 0.76rem; display: block; font-weight: 700; }
+        .nav-tile-label { font-size: 0.74rem; display: block; }
 
         .card {
             background: var(--bg-card);
@@ -167,7 +127,7 @@
             border-radius: 14px;
             padding: 14px;
             margin-bottom: 12px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
         }
 
         .btn {
@@ -176,7 +136,7 @@
             border: none;
             padding: 8px 14px;
             border-radius: 9px;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.84rem;
             cursor: pointer;
             display: inline-flex;
@@ -192,17 +152,16 @@
             background: #fff;
             color: var(--text-dark);
             border: 1px solid var(--border);
-            font-weight: 700;
         }
         .btn-sm { padding: 5px 9px; font-size: 0.76rem; }
 
         .form-group { margin-bottom: 10px; }
         .form-group label {
             display: block;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             margin-bottom: 4px;
-            font-weight: 700;
+            font-weight: 600;
         }
         .form-control {
             width: 100%;
@@ -210,98 +169,19 @@
             border: 1px solid var(--border);
             border-radius: 9px;
             font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--text-dark);
             background: #fff;
         }
         .form-control:focus { outline: none; border-color: var(--primary); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 
+        @media (max-width: 750px) {
+            .grid-4 { grid-template-columns: 1fr 1fr; }
+        }
         @media (max-width: 600px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
-        }
-
-        .today-banner-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #0f766e 0%, #0284c7 100%);
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 3px 10px rgba(15, 118, 110, 0.2);
-            font-weight: 700;
-        }
-
-        .today-banner-btn:hover { opacity: 0.96; }
-
-        .appt-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.65);
-            z-index: 9500;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-        }
-
-        .appt-modal-box {
-            background: #ffffff;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 680px;
-            max-height: 88vh;
-            overflow-y: auto;
-            padding: 14px;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-            border: 1px solid var(--border);
-        }
-
-        .appt-sheet-card {
-            background: #ffffff;
-            border: 2px solid var(--primary);
-            border-radius: 14px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-
-        .appt-sheet-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .appt-sheet-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-            font-weight: 700;
-        }
-
-        .appt-sheet-table th {
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            border: 1px solid #99f6e4;
-            padding: 8px;
-            text-align: right;
-        }
-
-        .appt-sheet-table td {
-            border: 1px solid #cbd5e1;
-            padding: 7px 8px;
-            color: var(--text-dark);
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
         }
 
         .slot-row {
@@ -369,7 +249,7 @@
             gap: 6px;
             margin-top: 8px;
             padding-top: 8px;
-            border-top: 1px dashed #cbd5e1;
+            border-top: 1px dashed #e2e8f0;
         }
 
         .search-bar-wrap { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -388,17 +268,51 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            font-weight: 700;
         }
 
         .patient-id-badge {
             background: var(--primary-light);
             color: var(--primary-dark);
-            font-weight: 700;
+            font-weight: bold;
             padding: 2px 8px;
             border-radius: 8px;
             font-size: 0.78rem;
             margin-left: 6px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .upcoming-appt-banner {
+            margin-top: 8px;
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .upcoming-appt-banner.has-appt {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .upcoming-appt-banner.no-appt {
+            background: #f8fafc;
+            color: var(--text-muted);
+            border: 1px dashed #cbd5e1;
         }
 
         .patient-quick-preview {
@@ -406,8 +320,7 @@
             border-top: 1px solid var(--border);
             padding: 11px 14px;
             display: none;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.84rem;
         }
 
         .patient-quick-preview.open { display: block; }
@@ -419,6 +332,7 @@
             padding-bottom: 8px;
             margin-bottom: 12px;
             border-bottom: 1px solid var(--border);
+            align-items: center;
         }
 
         .p-tab {
@@ -429,7 +343,7 @@
             font-size: 0.8rem;
             white-space: nowrap;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--text-muted);
         }
 
@@ -437,6 +351,12 @@
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
+        }
+
+        .p-tab-add {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #34d399;
         }
 
         .dental-chart-box {
@@ -468,7 +388,7 @@
             right: 8px;
             top: 58%;
             height: 2px;
-            background: #334155;
+            background: #475569;
             z-index: 4;
             pointer-events: none;
         }
@@ -484,7 +404,7 @@
         .tooth-card-v2 {
             width: 26px;
             height: 48px;
-            border: 1px solid #94a3b8;
+            border: 1px solid #cbd5e1;
             border-radius: 7px;
             background: #ffffff;
             cursor: pointer;
@@ -493,9 +413,8 @@
             align-items: center;
             justify-content: space-between;
             padding: 2px 1px;
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             font-weight: 700;
-            color: var(--text-dark);
             position: relative;
             transition: transform 0.1s;
         }
@@ -519,7 +438,7 @@
             width: 7px;
             height: 7px;
             background: #ffffff;
-            border: 1.4px solid #020617;
+            border: 1.3px solid #1e293b;
             border-radius: 1.5px;
             z-index: 5;
             pointer-events: none;
@@ -548,43 +467,21 @@
             border-radius: 18px;
             border: 1.5px solid var(--border);
             background: #fff;
-            color: var(--text-dark);
-            font-size: 0.78rem;
-            font-weight: 700;
+            font-size: 0.76rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.12s;
         }
 
         .color-chip:hover { border-color: var(--primary); }
-        .color-chip.manage-mode {
-            border-color: var(--accent);
-            background: #f0f9ff;
-        }
 
         .chip-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.35);
+            border: 1px solid rgba(0,0,0,0.25);
             flex-shrink: 0;
             display: inline-block;
-        }
-
-        .palette-manage-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px dashed var(--border);
-        }
-
-        .inline-editor-panel {
-            background: #f8fafc;
-            border: 1px solid #94a3b8;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 8px;
         }
 
         .quick-actions-strip {
@@ -599,12 +496,12 @@
         .rem-badge {
             display: inline-block;
             background: #fef3c7;
-            color: #78350f;
+            color: #92400e;
             border: 1px solid #f59e0b;
             padding: 3px 9px;
             border-radius: 12px;
-            font-size: 0.76rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 600;
             margin-top: 6px;
         }
 
@@ -623,11 +520,10 @@
             gap: 6px;
             padding: 6px 8px;
             background: #fff;
-            border: 1px solid var(--border);
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
             margin-bottom: 6px;
-            font-size: 0.83rem;
-            font-weight: 600;
+            font-size: 0.82rem;
         }
 
         .proc-pill {
@@ -637,17 +533,16 @@
             padding: 3px 8px;
             border-radius: 12px;
             background: #f1f5f9;
-            border: 1px solid #94a3b8;
+            border: 1px solid #cbd5e1;
             font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .del-proc-x {
             background: none;
             border: none;
             color: var(--danger);
-            font-weight: 700;
+            font-weight: bold;
             cursor: pointer;
             padding: 0 2px;
             font-size: 0.85rem;
@@ -657,7 +552,7 @@
         .inline-price-input {
             width: 125px;
             padding: 5px 8px;
-            border: 1.5px solid #64748b;
+            border: 1.5px solid #94a3b8;
             border-radius: 7px;
             font-size: 0.84rem;
             font-weight: 700;
@@ -671,9 +566,9 @@
         }
 
         .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.83rem; font-weight: 600; }
-        th, td { padding: 8px 7px; border-bottom: 1px solid var(--border); text-align: right; color: var(--text-dark); }
-        th { background: #f8fafc; color: var(--text-muted); font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        th, td { padding: 8px 7px; border-bottom: 1px solid var(--border); text-align: right; }
+        th { background: #f8fafc; color: var(--text-muted); font-weight: 600; }
 
         .stat-card {
             background: #f8fafc;
@@ -682,8 +577,8 @@
             padding: 11px;
             text-align: center;
         }
-        .stat-card span { display: block; font-size: 0.76rem; color: var(--text-muted); font-weight: 700; }
-        .stat-card strong { font-size: 1.08rem; color: var(--primary-dark); font-weight: 700; }
+        .stat-card span { display: block; font-size: 0.74rem; color: var(--text-muted); }
+        .stat-card strong { font-size: 1.08rem; color: var(--primary-dark); }
 
         .photo-grid {
             display: grid;
@@ -704,18 +599,6 @@
             object-fit: cover;
             display: block;
             cursor: pointer;
-        }
-
-        textarea.codes-box {
-            width: 100%;
-            min-height: 140px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 0.84rem;
-            background: #f8fafc;
-            color: var(--text-dark);
         }
 
         #printable-statement { display: none; }
@@ -774,684 +657,543 @@
 </head>
 <body>
 
-    <div id="activation-gate">
-        <div class="gate-box">
-            <h2 style="margin:0 0 6px 0; color:var(--primary-dark);">🔑 تفعيل التطبيق بكود</h2>
-            <p style="font-size:0.84rem; color:var(--text-muted); margin:0 0 10px 0;">
-                يعمل التطبيق بكود تفعيل مخصص لجهاز واحد فقط ولا يمكن نقله إلى جهاز آخر.
-            </p>
-            <div class="device-pill">
-                معرّف الجهاز: <span id="gate-device-id"></span>
-            </div>
-            <input type="text" id="activation-code-input" class="form-control" style="text-align:center;" placeholder="أدخل كود التفعيل (مثال: CLN-1001-2026-8801)">
-            <button type="button" class="btn" style="width:100%;" onclick="activateAppWithCode()">تفعيل وتشغيل التطبيق</button>
-            <div id="gate-error" style="color:var(--danger); font-size:0.82rem; font-weight:700; margin-top:10px;"></div>
-        </div>
-    </div>
-
     <div id="lock-screen">
         <div class="lock-box">
-            <h2 style="margin:0 0 6px 0; color:var(--primary-dark);">🔒 إدارة عيادة الأسنان</h2>
-            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">أدخل كلمة المرور للدخول إلى التطبيق</p>
+            <h2 style="margin:0 0 6px 0; color:var(--primary-dark);">🔒 عيادة د. ماهر خليل</h2>
+            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">أدخل كلمة المرور للدخول إلى النظام</p>
             <input type="password" id="unlock-pass-input" class="form-control" style="margin-bottom:10px; text-align:center;" placeholder="كلمة المرور">
             <button class="btn" style="width:100%;" onclick="unlockApp()">دخول</button>
             <div id="unlock-error" style="color:var(--danger); font-size:0.8rem; margin-top:8px;"></div>
         </div>
     </div>
 
-    <div id="today-sheet-modal" class="appt-modal-overlay" onclick="if(event.target===this) closeTodaySheetModal()">
-        <div class="appt-modal-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
-                <strong style="font-size:1rem; color:var(--primary-dark);">📋 جدول المواعيد السريع</strong>
-                <button type="button" class="btn btn-outline btn-sm" onclick="closeTodaySheetModal()">✖ إغلاق</button>
-            </div>
+    <header class="top-bar">
+        <h1>🦷 عيادة الدكتور ماهر خليل <span class="ver-pill">v2.1</span></h1>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span id="active-doc-badge" style="font-size:0.75rem; background:rgba(255,255,255,0.18); padding:3px 9px; border-radius:12px;">د. ماهر خليل</span>
+            <button class="btn btn-outline btn-sm" id="lock-now-btn" style="display:none;" onclick="lockAppNow()">🔒 قفل</button>
+        </div>
+    </header>
 
-            <div style="display:flex; flex-wrap:wrap; gap:6px; justify-content:space-between; align-items:center; background:#f8fafc; padding:8px; border-radius:10px; border:1px solid var(--border);">
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    <button type="button" class="btn btn-outline btn-sm" onclick="shiftModalDay(-1)">⏮️ اليوم السابق</button>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="setModalDayToToday()">اليوم</button>
-                    <button type="button" class="btn btn-accent btn-sm" onclick="shiftModalDay(1)">⏭️ اليوم التالي</button>
-                </div>
-                <button type="button" class="btn btn-success btn-sm" onclick="downloadModalScheduleImage()">🖼️ حفظ كصورة</button>
-            </div>
+    <div class="container">
 
-            <div id="appt-sheet-capture" class="appt-sheet-card">
-                <div class="appt-sheet-header">
-                    <div>
-                        <strong style="font-size:0.98rem; color:var(--primary-dark);">جدول المواعيد</strong>
-                        <div id="modal-sheet-date-label" style="font-size:0.82rem; font-weight:700; color:var(--accent);"></div>
-                    </div>
-                    <span id="modal-sheet-count-badge" class="appt-time-tag"></span>
-                </div>
-                <div id="modal-sheet-table-wrap"></div>
+        <div class="quick-nav-grid" id="main-nav">
+            <div class="nav-tile active" id="nav-patients" onclick="showMainScreen('patients')">
+                <span class="nav-tile-icon">👥</span>
+                <span class="nav-tile-label">المرضى</span>
+            </div>
+            <div class="nav-tile" id="nav-appointments" onclick="showMainScreen('appointments')">
+                <span class="nav-tile-icon">📅</span>
+                <span class="nav-tile-label">المواعيد</span>
+            </div>
+            <div class="nav-tile" id="nav-lab" onclick="showMainScreen('lab')">
+                <span class="nav-tile-icon">🔬</span>
+                <span class="nav-tile-label">المخبر</span>
+            </div>
+            <div class="nav-tile" id="nav-finance" onclick="showMainScreen('finance')">
+                <span class="nav-tile-icon">📊</span>
+                <span class="nav-tile-label">المحاسبة</span>
+            </div>
+            <div class="nav-tile" id="nav-settings" onclick="showMainScreen('settings')">
+                <span class="nav-tile-icon">⚙️</span>
+                <span class="nav-tile-label">الإعدادات</span>
             </div>
         </div>
-    </div>
 
-    <div id="app-shell" style="display:none;">
-        <header class="top-bar">
-            <h1>🦷 إدارة عيادة الأسنان <span class="ver-pill">v1.13</span></h1>
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span id="active-doc-badge" style="font-size:0.75rem; font-weight:700; background:rgba(255,255,255,0.2); padding:3px 9px; border-radius:12px;">الطبيب</span>
-                <button class="btn btn-outline btn-sm" id="lock-now-btn" style="display:none;" onclick="lockAppNow()">🔒 قفل</button>
-            </div>
-        </header>
+        <!-- 1. الصفحة الرئيسية: مواعيد اليوم + المرضى -->
+        <div id="screen-patients" class="screen active">
 
-        <div class="container">
-
-            <div class="quick-nav-grid" id="main-nav">
-                <div class="nav-tile active" id="nav-patients" onclick="showMainScreen('patients')">
-                    <span class="nav-tile-icon">👥</span>
-                    <span class="nav-tile-label">المرضى</span>
+            <div class="card" id="today-appointments-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+                    <strong style="font-size:0.95rem; color:var(--primary-dark);">📅 مواعيد اليوم</strong>
+                    <span id="today-header-date" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"></span>
                 </div>
-                <div class="nav-tile" id="nav-appointments" onclick="showMainScreen('appointments')">
-                    <span class="nav-tile-icon">📅</span>
-                    <span class="nav-tile-label">المواعيد</span>
-                </div>
-                <div class="nav-tile" id="nav-lab" onclick="showMainScreen('lab')">
-                    <span class="nav-tile-icon">🔬</span>
-                    <span class="nav-tile-label">المخبر</span>
-                </div>
-                <div class="nav-tile" id="nav-finance" onclick="showMainScreen('finance')">
-                    <span class="nav-tile-icon">📊</span>
-                    <span class="nav-tile-label">المحاسبة</span>
-                </div>
-                <div class="nav-tile" id="nav-settings" onclick="showMainScreen('settings')">
-                    <span class="nav-tile-icon">⚙️</span>
-                    <span class="nav-tile-label">الإعدادات</span>
-                </div>
+                <div id="today-appointments-list"></div>
             </div>
 
-            <div id="screen-patients" class="screen active">
-
-                <div class="card" id="today-appointments-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
-                        <strong style="font-size:0.95rem; color:var(--primary-dark);">📅 مواعيد اليوم</strong>
-                        <span id="today-header-date" style="font-size:0.8rem; color:var(--text-muted); font-weight:700;"></span>
-                    </div>
-                    <div id="today-appointments-list"></div>
-                </div>
-
-                <div class="search-bar-wrap">
-                    <input type="text" id="patient-search" class="form-control" placeholder="🔍 ابحث باسم المريض، رقم الملف، أو الهاتف..." oninput="renderPatientsList()">
-                    <button class="btn" style="white-space:nowrap;" onclick="toggleNewPatientForm()">+ مريض جديد</button>
-                </div>
-
-                <div id="new-patient-box" class="card" style="display:none; border-color:var(--primary);">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">فتح ملف مريض جديد</h3>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>رقم الملف</label>
-                            <input type="text" id="np-id" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>اسم المريض الكامل *</label>
-                            <input type="text" id="np-name" class="form-control" placeholder="الاسم الثلاثي">
-                        </div>
-                        <div class="form-group">
-                            <label>رقم الهاتف (واتساب)</label>
-                            <input type="tel" id="np-phone" class="form-control" placeholder="09xxxxxxxx">
-                        </div>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>العمر</label>
-                            <input type="number" id="np-age" class="form-control" placeholder="مثال: 30">
-                        </div>
-                        <div class="form-group">
-                            <label>ملاحظات طبية عامة</label>
-                            <input type="text" id="np-notes" class="form-control" placeholder="لا يوجد">
-                        </div>
-                    </div>
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn" onclick="createPatient()">💾 حفظ وفتح الملف</button>
-                        <button class="btn btn-outline" onclick="toggleNewPatientForm()">إلغاء</button>
-                    </div>
-                </div>
-
-                <div id="patients-list"></div>
+            <div class="search-bar-wrap">
+                <input type="text" id="patient-search" class="form-control" placeholder="🔍 ابحث باسم المريض، رقم الملف، أو الهاتف..." oninput="renderPatientsList()">
+                <button class="btn" style="white-space:nowrap;" onclick="toggleNewPatientForm()">+ مريض جديد</button>
             </div>
 
-            <div id="screen-appointments" class="screen">
-                <button type="button" class="today-banner-btn" onclick="openTodaySheetModal()">
-                    <span>📅 مواعيد اليوم (جدول سريع + تنقل الأيام)</span>
-                    <span id="today-banner-count" style="background:rgba(255,255,255,0.22); padding:3px 10px; border-radius:12px; font-size:0.82rem;">عرض الجدول</span>
-                </button>
-
-                <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-                        <strong style="font-size:1rem; color:var(--primary-dark);">📅 جدول المواعيد اليومي (كل نصف ساعة)</strong>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <input type="date" id="schedule-date-input" class="form-control" style="width:auto; padding:6px 10px;" onchange="renderAppointmentsPage()">
-                            <button type="button" class="btn btn-outline btn-sm" onclick="setScheduleToToday()">اليوم</button>
-                        </div>
+            <div id="new-patient-box" class="card" style="display:none; border-color:var(--primary);">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">فتح ملف مريض جديد</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>رقم الملف</label>
+                        <input type="text" id="np-id" class="form-control">
                     </div>
-                    <div id="schedule-day-title" style="font-size:0.88rem; font-weight:700; color:var(--accent); margin-bottom:10px;"></div>
-
-                    <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px;">
-                        <strong style="display:block; font-size:0.88rem; margin-bottom:8px; color:var(--primary-dark);">➕ إضافة موعد جديد في هذا اليوم</strong>
-                        <div class="grid-3">
-                            <div class="form-group">
-                                <label>اختر مريضاً موجوداً (بالاسم أو الرقم)</label>
-                                <select id="sched-existing-patient" class="form-control" onchange="onSelectExistingForSchedule()">
-                                    <option value="">-- أو اكتب اسم مريض جديد --</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>اسم المريض</label>
-                                <input type="text" id="sched-patient-name" class="form-control" placeholder="اكتب اسم المريض هنا">
-                            </div>
-                            <div class="form-group">
-                                <label>رقم الهاتف (اختياري)</label>
-                                <input type="tel" id="sched-patient-phone" class="form-control" placeholder="09xxxxxxxx">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>الوقت (من 10 صباحاً كل نصف ساعة)</label>
-                                <select id="sched-time-slot" class="form-control"></select>
-                            </div>
-                            <div class="form-group" style="display:flex; align-items:flex-end;">
-                                <button type="button" class="btn" style="width:100%;" onclick="addAppointmentFromSchedule()">💾 تثبيت الموعد</button>
-                            </div>
-                        </div>
-                        <div style="font-size:0.78rem; font-weight:600; color:var(--text-muted);">
-                            * إذا كان الوقت محجوزاً مسبقاً في هذا اليوم سيتم رفض التسجيل. وإذا أدخلت اسم مريض جديد سيُضاف تلقائياً برقم ملف في قائمة المرضى.
-                        </div>
+                    <div class="form-group">
+                        <label>اسم المريض الكامل *</label>
+                        <input type="text" id="np-name" class="form-control" placeholder="الاسم الثلاثي">
                     </div>
-
-                    <div id="schedule-slots-container"></div>
-                </div>
-            </div>
-
-            <div id="screen-patient-file" class="screen">
-                <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#f8fafc;">
-                    <div>
-                        <span class="patient-id-badge" id="pf-id-badge"></span>
-                        <strong style="font-size:1.05rem;" id="pf-name"></strong>
-                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;" id="pf-meta"></div>
-                    </div>
-                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button type="button" class="btn btn-accent btn-sm" onclick="toggleEditPatientInfo()">✏️ تعديل البيانات</button>
-                        <button type="button" class="btn btn-outline btn-sm" onclick="closePatientFile()">⬅️ العودة للمرضى</button>
+                    <div class="form-group">
+                        <label>رقم الهاتف (واتساب)</label>
+                        <input type="tel" id="np-phone" class="form-control" placeholder="09xxxxxxxx">
                     </div>
                 </div>
-
-                <div id="edit-patient-info-box" class="card" style="display:none; border-color:var(--accent); background:#f8fafc;">
-                    <h4 style="margin:0 0 10px 0; color:var(--accent);">✏️ تعديل بيانات المريض</h4>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>اسم المريض الكامل *</label>
-                            <input type="text" id="ep-name" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>رقم الهاتف (واتساب)</label>
-                            <input type="tel" id="ep-phone" class="form-control" placeholder="09xxxxxxxx">
-                        </div>
-                        <div class="form-group">
-                            <label>العمر</label>
-                            <input type="number" id="ep-age" class="form-control">
-                        </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>العمر</label>
+                        <input type="number" id="np-age" class="form-control" placeholder="مثال: 30">
                     </div>
                     <div class="form-group">
                         <label>ملاحظات طبية عامة</label>
-                        <input type="text" id="ep-notes" class="form-control">
-                    </div>
-                    <div style="display:flex; gap:8px;">
-                        <button type="button" class="btn btn-sm" onclick="savePatientInfoEdit()">💾 حفظ التعديلات</button>
-                        <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditPatientInfo()">إلغاء</button>
+                        <input type="text" id="np-notes" class="form-control" placeholder="لا يوجد">
                     </div>
                 </div>
-
-                <div class="patient-tabs">
-                    <button class="p-tab active" id="ptab-teeth" onclick="switchPatientTab('teeth')">🦷 مخطط الأسنان</button>
-                    <button class="p-tab" id="ptab-plan" onclick="switchPatientTab('plan')">📋 خطة المعالجة والقادم</button>
-                    <button class="p-tab" id="ptab-account" onclick="switchPatientTab('account')">💰 الجلسات والحساب</button>
-                    <button class="p-tab" id="ptab-photos" onclick="switchPatientTab('photos')">🩻 الصور الشعاعية والفموية</button>
-                    <button class="p-tab" id="ptab-appt" onclick="switchPatientTab('appt')">📅 الموعد وواتساب</button>
-                </div>
-
-                <div id="pview-teeth" class="pview">
-                    <div class="card" style="background:#f8fafc; border-color:var(--primary);">
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-                            <strong style="font-size:0.92rem; color:var(--primary-dark);">💰 ملخص حساب المريض</strong>
-                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                                <button type="button" class="btn btn-success btn-sm" onclick="toggleQuickPaymentBox()">💵 تسجيل دفعة</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="switchPatientTab('account')">📋 تفاصيل الحساب الكاملة</button>
-                            </div>
-                        </div>
-
-                        <div class="grid-3">
-                            <div class="stat-card"><span>إجمالي المعالجات</span><strong id="top-acc-total">0</strong></div>
-                            <div class="stat-card"><span>إجمالي المدفوعات</span><strong id="top-acc-paid" style="color:var(--success);">0</strong></div>
-                            <div class="stat-card"><span>المتبقي (المطلوب)</span><strong id="top-acc-rem" style="color:var(--danger);">0</strong></div>
-                        </div>
-
-                        <div id="quick-payment-box" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);">
-                            <div class="grid-3">
-                                <div class="form-group" style="margin-bottom:6px;">
-                                    <label>المبلغ المدفوع</label>
-                                    <input type="number" id="quick-pay-amount" class="form-control" placeholder="أدخل المبلغ">
-                                </div>
-                                <div class="form-group" style="margin-bottom:6px;">
-                                    <label>ملاحظة (اختياري)</label>
-                                    <input type="text" id="quick-pay-note" class="form-control" placeholder="دفعة نقدية...">
-                                </div>
-                                <div class="form-group" style="margin-bottom:6px; display:flex; align-items:flex-end; gap:6px;">
-                                    <button type="button" class="btn btn-success btn-sm" style="flex:1;" onclick="addQuickPaymentFromFirstPage()">💾 حفظ الدفعة</button>
-                                    <button type="button" class="btn btn-outline btn-sm" onclick="toggleQuickPaymentBox()">إلغاء</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
-                            <strong style="font-size:0.92rem;">مخطط الأسنان</strong>
-                            <span id="active-tooth-indicator" style="font-size:0.82rem; color:var(--primary-dark); font-weight:700;">
-                                السن #11 — اضغط على لون لإضافته
-                            </span>
-                        </div>
-
-                        <div class="dental-chart-box">
-                            <div style="font-size:0.72rem; font-weight:700; color:var(--text-muted); margin-bottom:2px;">الفك العلوي (يمين 18-11 | يسار 21-28)</div>
-                            <div class="jaw-wrap">
-                                <div class="ortho-arch-wire" id="wire-upper" style="display:none;"></div>
-                                <div class="jaw-row" id="upper-jaw"></div>
-                            </div>
-
-                            <hr style="border:0; border-top:1px dashed #94a3b8; margin:8px 0;">
-
-                            <div class="jaw-wrap">
-                                <div class="ortho-arch-wire" id="wire-lower" style="display:none;"></div>
-                                <div class="jaw-row" id="lower-jaw"></div>
-                            </div>
-                            <div style="font-size:0.72rem; font-weight:700; color:var(--text-muted); margin-top:2px;">الفك السفلي (يمين 48-41 | يسار 31-38)</div>
-
-                            <div id="removable-appliance-badge-wrap"></div>
-                            <div id="cleaning-session-badge-wrap"></div>
-                        </div>
-
-                        <div class="color-palette-bar">
-                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-                                <strong style="font-size:0.84rem; color:var(--primary-dark);">🎨 القائمة اللونية (اضغط لإضافة المعالجة ولونها على السن):</strong>
-                                <input type="text" id="te-note" class="form-control" style="max-width:240px; padding:5px 9px; font-size:0.8rem;" placeholder="ملاحظة للسن المحدد..." oninput="updateSelectedToothNote()">
-                            </div>
-                            <div class="palette-chips" id="palette-chips-container"></div>
-
-                            <div class="palette-manage-bar">
-                                <button type="button" class="btn btn-accent btn-sm" onclick="openPaletteAddForm()">+ معالجة جديدة بلون</button>
-                                <button type="button" class="btn btn-outline btn-sm" id="btn-toggle-edit-palette" onclick="togglePaletteEditMode()">✏️ تعديل اسم ولون معالجة</button>
-                                <button type="button" class="btn btn-outline btn-sm" id="btn-toggle-del-palette" style="color:var(--danger);" onclick="togglePaletteDeleteMode()">🗑️ حذف معالجة</button>
-                            </div>
-
-                            <div class="inline-editor-panel" id="palette-editor-panel" style="display:none;">
-                                <strong id="palette-editor-title" style="display:block; font-size:0.82rem; color:var(--primary-dark); margin-bottom:8px;">إضافة معالجة جديدة</strong>
-                                <div class="grid-3">
-                                    <div class="form-group" style="margin-bottom:6px;">
-                                        <label>اسم المعالجة</label>
-                                        <input type="text" id="pal-proc-name" class="form-control" placeholder="مثال: زيركون تجميلي">
-                                    </div>
-                                    <div class="form-group" style="margin-bottom:6px;">
-                                        <label>لون المعالجة</label>
-                                        <input type="color" id="pal-proc-color" class="form-control" value="#ec4899" style="height:35px; padding:2px;">
-                                    </div>
-                                    <div class="form-group" style="margin-bottom:6px;">
-                                        <label>السعر في قائمة الحساب (اختياري)</label>
-                                        <input type="number" id="pal-proc-price" class="form-control" placeholder="مثال: 1200000">
-                                    </div>
-                                </div>
-                                <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                                    <button type="button" class="btn btn-sm" onclick="savePaletteTreatment()">💾 حفظ المعالجة واللون</button>
-                                    <button type="button" class="btn btn-outline btn-sm" onclick="closePaletteEditor()">إغلاق</button>
-                                </div>
-                            </div>
-
-                            <div class="quick-actions-strip">
-                                <button type="button" class="btn btn-accent btn-sm" onclick="addCleaningSession()">✨ جلسة تنظيف أسنان</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="toggleOrthoArch('upper')">⛓️ تقويم ثابت علوي</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="toggleOrthoArch('lower')">⛓️ تقويم ثابت سفلي</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="toggleOrthoArch('both')">⛓️ تقويم ثابت فكين</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="cycleRemovableAppliance()">🧲 جهاز تقويم متحرك</button>
-                                <button type="button" class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="clearSelectedToothAll()">مسح معالجات السن</button>
-                            </div>
-                        </div>
-
-                        <div class="completed-treatments-box" id="teeth-notes-list"></div>
-                    </div>
-                </div>
-
-                <div id="pview-plan" class="pview" style="display:none;">
-                    <div class="card">
-                        <div class="form-group">
-                            <label>📋 خطة المعالجة الكاملة للمريض</label>
-                            <textarea id="pf-plan-text" rows="4" class="form-control" placeholder="اكتب خطة المعالجة الشاملة هنا..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label style="color:var(--primary-dark);">⏭️ إجراءات الجلسة القادمة</label>
-                            <textarea id="pf-next-step" rows="3" class="form-control" placeholder="ما الذي سيتم عمله في الجلسة القادمة تحديداً؟"></textarea>
-                        </div>
-                        <button class="btn" onclick="saveTreatmentPlan()">💾 حفظ الخطة وإجراءات الجلسة القادمة</button>
-                    </div>
-                </div>
-
-                <div id="pview-account" class="pview" style="display:none;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-                        <div class="form-group" style="margin:0; min-width:200px;">
-                            <label style="margin-bottom:2px;">الطبيب المنفذ</label>
-                            <select id="proc-doctor" class="form-control" style="padding:6px 10px; font-size:0.84rem;"></select>
-                        </div>
-                        <button type="button" class="btn btn-accent btn-sm" onclick="printPatientStatement()">🖨️ طباعة كشف حساب المريض</button>
-                    </div>
-
-                    <div class="grid-3" style="margin-bottom:12px;">
-                        <div class="stat-card"><span>إجمالي المعالجات</span><strong id="acc-total">0</strong></div>
-                        <div class="stat-card"><span>إجمالي المدفوعات</span><strong id="acc-paid" style="color:var(--success);">0</strong></div>
-                        <div class="stat-card"><span>المتبقي (المطلوب)</span><strong id="acc-rem" style="color:var(--danger);">0</strong></div>
-                    </div>
-
-                    <div class="card">
-                        <h4 style="margin:0 0 10px 0; color:var(--primary-dark);">➕ تسجيل جلسة عمل / معالجة جديدة</h4>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>اختر من قائمة الأسعار الثابتة</label>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <select id="preset-proc-select" class="form-control" style="flex:1;" onchange="applyPresetProcedure()">
-                                        <option value="">-- اختر معالجة أو أدخل قيمة حرة --</option>
-                                    </select>
-                                    <button type="button" class="btn btn-outline btn-sm" style="white-space:nowrap;" onclick="toggleAccountFeeEditor()">✏️ تعديل المعالجة والسعر</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>التاريخ</label>
-                                <input type="date" id="proc-date" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="inline-editor-panel" id="account-fee-editor" style="display:none; margin-bottom:10px;">
-                            <strong style="display:block; font-size:0.82rem; color:var(--accent); margin-bottom:6px;">تعديل نوع المعالجة وقيمتها السعرية</strong>
-                            <div class="grid-2">
-                                <div class="form-group" style="margin-bottom:6px;">
-                                    <label>نوع / اسم المعالجة</label>
-                                    <input type="text" id="edit-fee-name" class="form-control" placeholder="اسم المعالجة">
-                                </div>
-                                <div class="form-group" style="margin-bottom:6px;">
-                                    <label>القيمة السعرية</label>
-                                    <input type="number" id="edit-fee-price" class="form-control" placeholder="السعر">
-                                </div>
-                            </div>
-                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                                <button type="button" class="btn btn-sm" onclick="saveAccountFeeEdit()">💾 حفظ التعديل في القائمة</button>
-                                <button type="button" class="btn btn-accent btn-sm" onclick="addNewAccountFeeFromTab()">+ إضافة كمعالجة جديدة</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('account-fee-editor').style.display='none'">إغلاق</button>
-                            </div>
-                        </div>
-
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>وصف الإجراء / المعالجة</label>
-                                <input type="text" id="proc-desc" class="form-control" placeholder="مثال: قلع سن مؤقت لطفل">
-                            </div>
-                            <div class="form-group">
-                                <label>قيمة المعالجة</label>
-                                <input type="number" id="proc-cost" class="form-control" value="0">
-                            </div>
-                        </div>
-                        <button class="btn btn-sm" onclick="addProcedure()">إضافة إلى سجل الجلسات والحساب</button>
-                    </div>
-
-                    <div class="card">
-                        <h4 style="margin:0 0 10px 0; color:var(--success);">💵 تسجيل دفعة مالية من المريض</h4>
-                        <div class="grid-3">
-                            <div class="form-group">
-                                <label>المبلغ المدفوع</label>
-                                <input type="number" id="pay-amount" class="form-control" placeholder="المبلغ">
-                            </div>
-                            <div class="form-group">
-                                <label>التاريخ</label>
-                                <input type="date" id="pay-date" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>ملاحظة</label>
-                                <input type="text" id="pay-note" class="form-control" placeholder="دفعة نقدية...">
-                            </div>
-                        </div>
-                        <button class="btn btn-success btn-sm" onclick="addPayment()">تسجيل الدفعة</button>
-                    </div>
-
-                    <div class="card">
-                        <h4 style="margin:0 0 10px 0;">سجل الجلسات والدفعات</h4>
-                        <div class="table-wrap" id="account-ledger"></div>
-                    </div>
-                </div>
-
-                <div id="pview-photos" class="pview" style="display:none;">
-                    <div class="card">
-                        <h4 style="margin:0 0 10px 0;">إضافة صورة شعاعية أو فموية</h4>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>اختر الصورة من الجهاز</label>
-                                <input type="file" id="photo-input" accept="image/*" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>وصف الصورة</label>
-                                <input type="text" id="photo-label" class="form-control" placeholder="مثال: بانوراما، ذروية #23...">
-                            </div>
-                        </div>
-                        <button class="btn btn-sm" onclick="uploadPatientPhoto()">📤 حفظ الصورة في ملف المريض</button>
-                        <div class="photo-grid" id="patient-photos-grid"></div>
-                    </div>
-                </div>
-
-                <div id="pview-appt" class="pview" style="display:none;">
-                    <div class="card">
-                        <h4 style="margin:0 0 10px 0;">تحديد الموعد القادم والتذكير عبر واتساب</h4>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>تاريخ الموعد</label>
-                                <input type="date" id="appt-date" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>الوقت (كل نصف ساعة من 10 صباحاً)</label>
-                                <select id="appt-time" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
-                            <button class="btn" onclick="saveAppointment()">💾 حفظ الموعد</button>
-                            <button class="btn btn-success" onclick="sendWhatsAppReminder()">📲 إرسال الموعد عبر واتساب</button>
-                        </div>
-                    </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn" onclick="createPatient()">💾 حفظ وفتح الملف</button>
+                    <button class="btn btn-outline" onclick="toggleNewPatientForm()">إلغاء</button>
                 </div>
             </div>
 
-            <div id="screen-lab" class="screen">
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">🔬 تسجيل عمل مخبري جديد</h3>
+            <div id="patients-list"></div>
+        </div>
+
+        <!-- صفحة المواعيد -->
+        <div id="screen-appointments" class="screen">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                    <strong style="font-size:1rem; color:var(--primary-dark);">📅 جدول المواعيد اليومي (كل نصف ساعة)</strong>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <input type="date" id="schedule-date-input" class="form-control" style="width:auto; padding:6px 10px;" onchange="renderAppointmentsPage()">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="setScheduleToToday()">اليوم</button>
+                    </div>
+                </div>
+                <div id="schedule-day-title" style="font-size:0.88rem; font-weight:700; color:var(--accent); margin-bottom:10px;"></div>
+
+                <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px;">
+                    <strong style="display:block; font-size:0.88rem; margin-bottom:8px; color:var(--primary-dark);">➕ إضافة موعد جديد في هذا اليوم</strong>
                     <div class="grid-3">
                         <div class="form-group">
-                            <label>اسم المريض</label>
-                            <input type="text" id="lab-patient" class="form-control" placeholder="اسم المريض">
-                        </div>
-                        <div class="form-group">
-                            <label>نوع العمل المخبري</label>
-                            <input type="text" id="lab-type" class="form-control" placeholder="مثال: خزف على معدن / زيركون">
-                        </div>
-                        <div class="form-group">
-                            <label>اللون (Shade)</label>
-                            <input type="text" id="lab-shade" class="form-control" placeholder="مثال: A2 / B1">
-                        </div>
-                    </div>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>التكلفة المخبرية</label>
-                            <input type="number" id="lab-cost" class="form-control" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label>تاريخ البدء / الإرسال</label>
-                            <input type="date" id="lab-start" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>تاريخ التسليم المتوقع</label>
-                            <input type="date" id="lab-due" class="form-control">
-                        </div>
-                    </div>
-                    <button class="btn btn-sm" onclick="addLabOrder()">➕ إضافة لسجل المخبر</button>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem;">سجل الأعمال المخبرية (عدّل اللون والتكلفة والتواريخ مباشرة)</h3>
-                    <div class="table-wrap" id="lab-table-wrap"></div>
-                </div>
-            </div>
-
-            <div id="screen-finance" class="screen">
-                <div class="grid-3" style="margin-bottom:12px;">
-                    <div class="stat-card"><span>إيراد اليوم</span><strong id="fin-day">0</strong></div>
-                    <div class="stat-card"><span>إيراد الأسبوع (7 أيام)</span><strong id="fin-week">0</strong></div>
-                    <div class="stat-card"><span>إيراد الشهر الحالي</span><strong id="fin-month">0</strong></div>
-                </div>
-
-                <div class="grid-3" style="margin-bottom:12px;">
-                    <div class="stat-card"><span>إجمالي المدخولات العامة</span><strong id="fin-total-in" style="color:var(--success);">0</strong></div>
-                    <div class="stat-card"><span>إجمالي المصاريف العامة</span><strong id="fin-total-out" style="color:var(--danger);">0</strong></div>
-                    <div class="stat-card"><span>صافي الصندوق</span><strong id="fin-net">0</strong></div>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">تسجيل مصروف عام أو مدخول خارجي</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>النوع</label>
-                            <select id="fin-type" class="form-control">
-                                <option value="expense">مصروف عام</option>
-                                <option value="income">مدخول عام إضافي</option>
+                            <label>اختر مريضاً موجوداً (بالاسم أو الرقم)</label>
+                            <select id="sched-existing-patient" class="form-control" onchange="onSelectExistingForSchedule()">
+                                <option value="">-- أو اكتب اسم مريض جديد --</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>التاريخ</label>
-                            <input type="date" id="fin-date" class="form-control">
+                            <label>اسم المريض</label>
+                            <input type="text" id="sched-patient-name" class="form-control" placeholder="اكتب اسم المريض هنا">
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف (اختياري)</label>
+                            <input type="tel" id="sched-patient-phone" class="form-control" placeholder="09xxxxxxxx">
                         </div>
                     </div>
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>البيان / الوصف</label>
-                            <input type="text" id="fin-desc" class="form-control" placeholder="مثال: مواد سنية، مخبر، فواتير...">
-                        </div>
-                        <div class="form-group">
-                            <label>المبلغ</label>
-                            <input type="number" id="fin-amount" class="form-control" placeholder="المبلغ">
-                        </div>
-                    </div>
-                    <button class="btn btn-sm" onclick="addGeneralFinance()">💾 تسجيل الحركة المالية</button>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem;">سجل المدخولات والمصاريف العامة</h3>
-                    <div class="table-wrap" id="finance-table-wrap"></div>
-                </div>
-            </div>
-
-            <div id="screen-settings" class="screen">
-                <div class="card" id="license-generator-card" style="display:none; border-color:var(--accent);">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--accent);">🔑 توليد وإدارة أكواد التفعيل (كود لكل جهاز)</h3>
-                    <div style="font-size:0.82rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">
-                        الأكواد غير المستخدمة المتاحة: <span id="unused-codes-count" style="color:var(--primary-dark);">0</span> |
-                        الأكواد المفعّلة على أجهزة: <span id="used-codes-count" style="color:var(--success);">0</span>
-                    </div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                        <input type="number" id="bulk-code-count" class="form-control" style="width:130px; margin:0;" value="50" min="1" max="1000">
-                        <button type="button" class="btn btn-accent btn-sm" onclick="generateBulkActivationCodes()">⚡ توليد دفعة أكواد</button>
-                        <button type="button" class="btn btn-outline btn-sm" onclick="copyBulkCodesText()">📋 نسخ الأكواد</button>
-                        <button type="button" class="btn btn-outline btn-sm" onclick="downloadBulkCodesFile()">💾 تحميل TXT</button>
-                    </div>
-                    <textarea id="bulk-codes-output" class="codes-box" style="margin-top:10px;" placeholder="اضغط (توليد دفعة أكواد) لتوليد مجموعة أكواد جاهزة للتوزيع..."></textarea>
-                    <div id="used-codes-summary" style="margin-top:8px; font-size:0.78rem; font-weight:600; color:var(--text-muted);"></div>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary);" id="type-form-title">🎨 إضافة وتحرير أنواع المعالجات (تسمية ولون)</h3>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>تسمية المعالجة (أضف معالجة جديدة أو عدّل تسمية الحالية)</label>
-                            <input type="text" id="type-name-input" class="form-control" placeholder="مثال: قلع سن مؤقت لطفل">
-                        </div>
-                        <div class="form-group">
-                            <label>لون المعالجة</label>
-                            <input type="color" id="type-color-input" class="form-control" value="#ec4899" style="height:36px; padding:2px;">
-                        </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end; gap:6px;">
-                            <button class="btn" style="flex:1;" id="type-save-btn" onclick="saveTreatmentType()">💾 حفظ</button>
-                            <button class="btn btn-outline" id="type-cancel-btn" style="display:none;" onclick="cancelEditType()">إلغاء</button>
-                        </div>
-                    </div>
-                    <div class="table-wrap" id="treatment-types-list"></div>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--accent);">💵 قائمة الأسعار (عدّل أي سعر متى شئت أو أضف معالجة بسعرها)</h3>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>إضافة معالجة جديدة للقائمة</label>
-                            <input type="text" id="fee-name-input" class="form-control" placeholder="اسم المعالجة">
-                        </div>
-                        <div class="form-group">
-                            <label>السعر</label>
-                            <input type="number" id="fee-price-input" class="form-control" placeholder="السعر">
+                            <label>الوقت (من 10 صباحاً كل نصف ساعة)</label>
+                            <select id="sched-time-slot" class="form-control"></select>
                         </div>
                         <div class="form-group" style="display:flex; align-items:flex-end;">
-                            <button class="btn btn-accent" style="width:100%;" onclick="addFeeItem()">+ إضافة للقائمة</button>
+                            <button type="button" class="btn" style="width:100%;" onclick="addAppointmentFromSchedule()">💾 تثبيت الموعد</button>
                         </div>
                     </div>
-                    <div class="table-wrap" id="fees-list"></div>
+                    <div style="font-size:0.76rem; color:var(--text-muted);">
+                        * إذا كان الوقت محجوزاً مسبقاً في هذا اليوم سيتم رفض التسجيل. وإذا أدخلت اسم مريض جديد سيُضاف تلقائياً برقم ملف في قائمة المرضى.
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary-dark);">👨‍⚕️ الأطباء في العيادة</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>إضافة طبيب جديد</label>
-                            <input type="text" id="doc-name-input" class="form-control" placeholder="مثال: د. أحمد...">
-                        </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end;">
-                            <button class="btn btn-sm" onclick="addDoctor()">+ إضافة طبيب</button>
-                        </div>
-                    </div>
-                    <div id="doctors-list-wrap"></div>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem; color:var(--warning);">🔐 كلمة مرور الدخول إلى النظام</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>كلمة المرور (اتركها فارغة لإلغاء القفل)</label>
-                            <input type="password" id="set-password-input" class="form-control" placeholder="أدخل كلمة المرور المطلوبة">
-                        </div>
-                        <div class="form-group" style="display:flex; align-items:flex-end; gap:8px;">
-                            <button class="btn btn-sm" onclick="saveAppPassword()">💾 حفظ كلمة المرور</button>
-                            <button class="btn btn-outline btn-sm" onclick="clearAppPassword()">إلغاء كلمة المرور</button>
-                        </div>
-                    </div>
-                    <div id="pass-status-text" style="font-size:0.8rem; font-weight:600; color:var(--text-muted);"></div>
-                </div>
-
-                <div class="card">
-                    <h3 style="margin-top:0; font-size:1rem;">🔄 النسخ الاحتياطي ونقل البيانات</h3>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <button class="btn btn-outline btn-sm" onclick="exportAllData()">📤 تصدير نسخة احتياطية (JSON)</button>
-                        <label class="btn btn-outline btn-sm" style="cursor:pointer;">
-                            📥 استيراد نسخة بيانات
-                            <input type="file" accept=".json,application/json,text/plain" style="display:none;" onchange="importAllData(event)">
-                        </label>
-                    </div>
-                </div>
+                <div id="schedule-slots-container"></div>
             </div>
-
         </div>
+
+        <!-- 2. شاشة ملف المريض المستقل -->
+        <div id="screen-patient-file" class="screen">
+            <div class="card" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; background:#f8fafc;">
+                <div>
+                    <span class="patient-id-badge" id="pf-id-badge"></span>
+                    <strong style="font-size:1.05rem;" id="pf-name"></strong>
+                    <div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;" id="pf-meta"></div>
+                    <div id="pf-next-appt-badge" class="upcoming-appt-banner no-appt">📅 لا يوجد موعد قادم مسجل</div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="closePatientFile()">⬅️ العودة للمرضى</button>
+            </div>
+
+            <div class="patient-tabs">
+                <button class="p-tab active" id="ptab-teeth" onclick="switchPatientTab('teeth')">🦷 مخطط الأسنان</button>
+                <button class="p-tab" id="ptab-plan" onclick="switchPatientTab('plan')">📋 خطة المعالجة والقادم</button>
+                <button class="p-tab" id="ptab-account" onclick="switchPatientTab('account')">💰 الجلسات والحساب</button>
+                <button class="p-tab" id="ptab-photos" onclick="switchPatientTab('photos')">🩻 الصور الشعاعية والفموية</button>
+                <button class="p-tab" id="ptab-appt" onclick="switchPatientTab('appt')">📅 الموعد وواتساب</button>
+                <button type="button" class="p-tab p-tab-add" onclick="openAddAppointmentInFile()">➕ إضافة موعد</button>
+            </div>
+
+            <!-- تبويب 1: مخطط الأسنان -->
+            <div id="pview-teeth" class="pview">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+                        <strong style="font-size:0.92rem;">مخطط الأسنان</strong>
+                        <span id="active-tooth-indicator" style="font-size:0.82rem; color:var(--primary-dark); font-weight:bold;">
+                            السن #11 — اضغط على لون لإضافته
+                        </span>
+                    </div>
+
+                    <div class="dental-chart-box">
+                        <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:2px;">الفك العلوي (يمين 18-11 | يسار 21-28)</div>
+                        <div class="jaw-wrap">
+                            <div class="ortho-arch-wire" id="wire-upper" style="display:none;"></div>
+                            <div class="jaw-row" id="upper-jaw"></div>
+                        </div>
+
+                        <hr style="border:0; border-top:1px dashed #cbd5e1; margin:8px 0;">
+
+                        <div class="jaw-wrap">
+                            <div class="ortho-arch-wire" id="wire-lower" style="display:none;"></div>
+                            <div class="jaw-row" id="lower-jaw"></div>
+                        </div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">الفك السفلي (يمين 48-41 | يسار 31-38)</div>
+
+                        <div id="removable-appliance-badge-wrap"></div>
+                        <div id="cleaning-session-badge-wrap"></div>
+                    </div>
+
+                    <div class="color-palette-bar">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+                            <strong style="font-size:0.84rem; color:var(--primary-dark);">🎨 القائمة اللونية (اضغط لإضافة المعالجة ولونها على السن):</strong>
+                            <input type="text" id="te-note" class="form-control" style="max-width:240px; padding:5px 9px; font-size:0.8rem;" placeholder="ملاحظة للسن المحدد..." oninput="updateSelectedToothNote()">
+                        </div>
+                        <div class="palette-chips" id="palette-chips-container"></div>
+
+                        <div class="quick-actions-strip">
+                            <button type="button" class="btn btn-accent btn-sm" onclick="addCleaningSession()">✨ جلسة تنظيف أسنان</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="toggleOrthoArch('upper')">⛓️ تقويم ثابت علوي</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="toggleOrthoArch('lower')">⛓️ تقويم ثابت سفلي</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="toggleOrthoArch('both')">⛓️ تقويم ثابت فكين</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="cycleRemovableAppliance()">🧲 جهاز تقويم متحرك</button>
+                            <button type="button" class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="clearSelectedToothAll()">مسح معالجات السن</button>
+                        </div>
+                    </div>
+
+                    <div class="completed-treatments-box" id="teeth-notes-list"></div>
+                </div>
+            </div>
+
+            <!-- تبويب 2: خطة المعالجة وإجراءات الجلسة القادمة -->
+            <div id="pview-plan" class="pview" style="display:none;">
+                <div class="card">
+                    <div class="form-group">
+                        <label>📋 خطة المعالجة الكاملة للمريض</label>
+                        <textarea id="pf-plan-text" rows="4" class="form-control" placeholder="اكتب خطة المعالجة الشاملة هنا..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label style="color:var(--primary-dark);">⏭️ إجراءات الجلسة القادمة</label>
+                        <textarea id="pf-next-step" rows="3" class="form-control" placeholder="ما الذي سيتم عمله في الجلسة القادمة تحديداً؟"></textarea>
+                    </div>
+                    <button class="btn" onclick="saveTreatmentPlan()">💾 حفظ الخطة وإجراءات الجلسة القادمة</button>
+                </div>
+            </div>
+
+            <!-- تبويب 3: الجلسات والحساب الآلي + الطباعة -->
+            <div id="pview-account" class="pview" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                    <div class="form-group" style="margin:0; min-width:200px;">
+                        <label style="margin-bottom:2px;">الطبيب المنفذ</label>
+                        <select id="proc-doctor" class="form-control" style="padding:6px 10px; font-size:0.84rem;"></select>
+                    </div>
+                    <button type="button" class="btn btn-accent btn-sm" onclick="printPatientStatement()">🖨️ طباعة كشف حساب المريض</button>
+                </div>
+
+                <div class="grid-3" style="margin-bottom:12px;">
+                    <div class="stat-card"><span>إجمالي المعالجات</span><strong id="acc-total">0</strong></div>
+                    <div class="stat-card"><span>إجمالي المدفوعات</span><strong id="acc-paid" style="color:var(--success);">0</strong></div>
+                    <div class="stat-card"><span>المتبقي (المطلوب)</span><strong id="acc-rem" style="color:var(--danger);">0</strong></div>
+                </div>
+
+                <div class="card">
+                    <h4 style="margin:0 0 10px 0; color:var(--primary-dark);">➕ تسجيل جلسة عمل / معالجة جديدة</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>اختر من قائمة الأسعار</label>
+                            <select id="preset-proc-select" class="form-control" onchange="applyPresetProcedure()">
+                                <option value="">-- اختر معالجة أو أدخل قيمة حرة --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>نوع / تصنيف المعالجة</label>
+                            <select id="proc-category" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>التاريخ</label>
+                            <input type="date" id="proc-date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>وصف الإجراء / المعالجة</label>
+                            <input type="text" id="proc-desc" class="form-control" placeholder="مثال: قلع سن مؤقت لطفل">
+                        </div>
+                        <div class="form-group">
+                            <label>قيمة المعالجة</label>
+                            <input type="number" id="proc-cost" class="form-control" value="0">
+                        </div>
+                    </div>
+                    <button class="btn btn-sm" onclick="addProcedure()">إضافة إلى سجل الجلسات والحساب</button>
+                </div>
+
+                <div class="card">
+                    <h4 style="margin:0 0 10px 0; color:var(--success);">💵 تسجيل دفعة مالية من المريض</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>المبلغ المدفوع</label>
+                            <input type="number" id="pay-amount" class="form-control" placeholder="المبلغ">
+                        </div>
+                        <div class="form-group">
+                            <label>التاريخ</label>
+                            <input type="date" id="pay-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>ملاحظة</label>
+                            <input type="text" id="pay-note" class="form-control" placeholder="دفعة نقدية...">
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-sm" onclick="addPayment()">تسجيل الدفعة</button>
+                </div>
+
+                <div class="card">
+                    <h4 style="margin:0 0 10px 0;">سجل الجلسات والدفعات</h4>
+                    <div class="table-wrap" id="account-ledger"></div>
+                </div>
+            </div>
+
+            <!-- تبويب 4: الصور الشعاعية والفموية -->
+            <div id="pview-photos" class="pview" style="display:none;">
+                <div class="card">
+                    <h4 style="margin:0 0 10px 0;">إضافة صورة شعاعية أو فموية</h4>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>اختر الصورة من الجهاز</label>
+                            <input type="file" id="photo-input" accept="image/*" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>وصف الصورة</label>
+                            <input type="text" id="photo-label" class="form-control" placeholder="مثال: بانوراما، ذروية #23...">
+                        </div>
+                    </div>
+                    <button class="btn btn-sm" onclick="uploadPatientPhoto()">📤 حفظ الصورة في ملف المريض</button>
+                    <div class="photo-grid" id="patient-photos-grid"></div>
+                </div>
+            </div>
+
+            <!-- تبويب 5: المواعيد وواتساب -->
+            <div id="pview-appt" class="pview" style="display:none;">
+                <div class="card">
+                    <h4 style="margin:0 0 10px 0;">تحديد / تعديل الموعد القادم والتذكير عبر واتساب</h4>
+                    <div id="pview-appt-current-info" style="margin-bottom:10px;"></div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>تاريخ الموعد</label>
+                            <input type="date" id="appt-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>الوقت (كل نصف ساعة من 10 صباحاً)</label>
+                            <select id="appt-time" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+                        <button class="btn" onclick="saveAppointment()">💾 حفظ الموعد</button>
+                        <button class="btn btn-success" onclick="sendWhatsAppReminder()">📲 إرسال الموعد عبر واتساب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. شاشة العمل المخبري العام -->
+        <div id="screen-lab" class="screen">
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">🔬 تسجيل عمل مخبري جديد</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>اسم المريض</label>
+                        <input type="text" id="lab-patient" class="form-control" placeholder="اسم المريض">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع العمل المخبري</label>
+                        <input type="text" id="lab-type" class="form-control" placeholder="مثال: خزف على معدن / زيركون">
+                    </div>
+                    <div class="form-group">
+                        <label>اللون (Shade)</label>
+                        <input type="text" id="lab-shade" class="form-control" placeholder="مثال: A2 / B1">
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>التكلفة المخبرية</label>
+                        <input type="number" id="lab-cost" class="form-control" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ البدء / الإرسال</label>
+                        <input type="date" id="lab-start" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ التسليم المتوقع</label>
+                        <input type="date" id="lab-due" class="form-control">
+                    </div>
+                </div>
+                <button class="btn btn-sm" onclick="addLabOrder()">➕ إضافة لسجل المخبر</button>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem;">سجل الأعمال المخبرية</h3>
+                <div class="table-wrap" id="lab-table-wrap"></div>
+            </div>
+        </div>
+
+        <!-- 4. شاشة الإيرادات والمحاسبة العامة -->
+        <div id="screen-finance" class="screen">
+            <div class="grid-3" style="margin-bottom:12px;">
+                <div class="stat-card"><span>إيراد اليوم</span><strong id="fin-day">0</strong></div>
+                <div class="stat-card"><span>إيراد الأسبوع (7 أيام)</span><strong id="fin-week">0</strong></div>
+                <div class="stat-card"><span>إيراد الشهر الحالي</span><strong id="fin-month">0</strong></div>
+            </div>
+
+            <div class="grid-3" style="margin-bottom:12px;">
+                <div class="stat-card"><span>إجمالي المدخولات العامة</span><strong id="fin-total-in" style="color:var(--success);">0</strong></div>
+                <div class="stat-card"><span>إجمالي المصاريف العامة</span><strong id="fin-total-out" style="color:var(--danger);">0</strong></div>
+                <div class="stat-card"><span>صافي الصندوق</span><strong id="fin-net">0</strong></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">تسجيل مصروف عام أو مدخول خارجي</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>النوع</label>
+                        <select id="fin-type" class="form-control">
+                            <option value="expense">مصروف عام</option>
+                            <option value="income">مدخول عام إضافي</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>التاريخ</label>
+                        <input type="date" id="fin-date" class="form-control">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>البيان / الوصف</label>
+                        <input type="text" id="fin-desc" class="form-control" placeholder="مثال: مواد سنية، مخبر، فواتير...">
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ</label>
+                        <input type="number" id="fin-amount" class="form-control" placeholder="المبلغ">
+                    </div>
+                </div>
+                <button class="btn btn-sm" onclick="addGeneralFinance()">💾 تسجيل الحركة المالية</button>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem;">سجل المدخولات والمصاريف العامة</h3>
+                <div class="table-wrap" id="finance-table-wrap"></div>
+            </div>
+        </div>
+
+        <!-- 5. شاشة الإعدادات -->
+        <div id="screen-settings" class="screen">
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--accent);" id="fee-form-title">💵 قائمة الأسعار ونوع المعالجة (إضافة وتعديل في أي وقت)</h3>
+                <div class="grid-4">
+                    <div class="form-group">
+                        <label>اسم المعالجة</label>
+                        <input type="text" id="fee-name-input" class="form-control" placeholder="اسم المعالجة">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع / تصنيف المعالجة</label>
+                        <select id="fee-category-input" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر</label>
+                        <input type="number" id="fee-price-input" class="form-control" placeholder="السعر">
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end; gap:6px;">
+                        <button class="btn btn-accent" style="flex:1;" id="fee-save-btn" onclick="saveFeeItem()">💾 حفظ</button>
+                        <button class="btn btn-outline" id="fee-cancel-btn" style="display:none;" onclick="cancelEditFee()">إلغاء</button>
+                    </div>
+                </div>
+                <div style="margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <span style="font-size:0.78rem; color:var(--text-muted); font-weight:600;">تصفية حسب النوع:</span>
+                    <select id="fee-filter-category" class="form-control" style="width:auto; padding:4px 10px; font-size:0.8rem;" onchange="renderFeesSettings()">
+                        <option value="ALL">جميع الأنواع</option>
+                    </select>
+                </div>
+                <div class="table-wrap" id="fees-list"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--primary);" id="type-form-title">🎨 التحكم بأنواع المعالجات وألوانها في المخطط</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>تسمية المعالجة (أضف معالجة جديدة أو عدّل تسمية الحالية)</label>
+                        <input type="text" id="type-name-input" class="form-control" placeholder="مثال: قلع سن مؤقت لطفل">
+                    </div>
+                    <div class="form-group">
+                        <label>لون المعالجة</label>
+                        <input type="color" id="type-color-input" class="form-control" value="#ec4899" style="height:36px; padding:2px;">
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end; gap:6px;">
+                        <button class="btn" style="flex:1;" id="type-save-btn" onclick="saveTreatmentType()">💾 حفظ</button>
+                        <button class="btn btn-outline" id="type-cancel-btn" style="display:none;" onclick="cancelEditType()">إلغاء</button>
+                    </div>
+                </div>
+                <div class="table-wrap" id="treatment-types-list"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--primary-dark);">👨‍⚕️ الأطباء في العيادة</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>إضافة طبيب جديد</label>
+                        <input type="text" id="doc-name-input" class="form-control" placeholder="مثال: د. أحمد...">
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end;">
+                        <button class="btn btn-sm" onclick="addDoctor()">+ إضافة طبيب</button>
+                    </div>
+                </div>
+                <div id="doctors-list-wrap"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem; color:var(--warning);">🔐 كلمة مرور الدخول إلى النظام</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>كلمة المرور (اتركها فارغة لإلغاء القفل)</label>
+                        <input type="password" id="set-password-input" class="form-control" placeholder="أدخل كلمة المرور المطلوبة">
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end; gap:8px;">
+                        <button class="btn btn-sm" onclick="saveAppPassword()">💾 حفظ كلمة المرور</button>
+                        <button class="btn btn-outline btn-sm" onclick="clearAppPassword()">إلغاء كلمة المرور</button>
+                    </div>
+                </div>
+                <div id="pass-status-text" style="font-size:0.8rem; color:var(--text-muted);"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; font-size:1rem;">🔄 النسخ الاحتياطي ونقل البيانات</h3>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-sm" onclick="exportAllData()">📤 تصدير نسخة احتياطية (JSON)</button>
+                    <label class="btn btn-outline btn-sm" style="cursor:pointer;">
+                        📥 استيراد نسخة بيانات
+                        <input type="file" accept=".json,application/json,text/plain" style="display:none;" onchange="importAllData(event)">
+                    </label>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div id="printable-statement"></div>
 
 <script>
+    const procedureCategories = [
+        "تشخيص ووقاية",
+        "مداواة تحفظية (حشوات)",
+        "معالجة لبية (سحب عصب)",
+        "تعويضات سنية وتيجان",
+        "جراحة وزراعة",
+        "تقويم أسنان",
+        "أعمال مخبرية"
+    ];
+
     const defaultTreatmentTypes = [
         { id: "tt1", name: "حشوة", color: "#3b82f6" },
         { id: "tt2", name: "سحب عصب", color: "#ef4444" },
@@ -1463,14 +1205,14 @@
     ];
 
     const defaultFeeItems = [
-        { id: "f1", name: "معاينة واستشارة", price: 50000 },
-        { id: "f2", name: "حشوة ضوئية", price: 250000 },
-        { id: "f3", name: "سحب عصب", price: 450000 },
-        { id: "f4", name: "تتويج", price: 900000 },
-        { id: "f5", name: "خزف على معدن", price: 1000000 },
-        { id: "f6", name: "جلسة تنظيف أسنان", price: 200000 },
-        { id: "f7", name: "قلع سن", price: 150000 },
-        { id: "f8", name: "تقويم أسنان", price: 3000000 }
+        { id: "f1", name: "معاينة واستشارة", category: "تشخيص ووقاية", price: 50000 },
+        { id: "f2", name: "حشوة ضوئية", category: "مداواة تحفظية (حشوات)", price: 250000 },
+        { id: "f3", name: "سحب عصب", category: "معالجة لبية (سحب عصب)", price: 450000 },
+        { id: "f4", name: "تتويج", category: "تعويضات سنية وتيجان", price: 900000 },
+        { id: "f5", name: "خزف على معدن", category: "تعويضات سنية وتيجان", price: 1000000 },
+        { id: "f6", name: "جلسة تنظيف أسنان", category: "تشخيص ووقاية", price: 200000 },
+        { id: "f7", name: "قلع سن", category: "جراحة وزراعة", price: 150000 },
+        { id: "f8", name: "تقويم أسنان", category: "تقويم أسنان", price: 3000000 }
     ];
 
     const arabicDays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
@@ -1509,280 +1251,18 @@
         generalFinance: [],
         treatmentTypes: [...defaultTreatmentTypes],
         feeItems: [...defaultFeeItems],
-        doctors: ["الطبيب"],
-        activeDoctor: "الطبيب",
-        appPassword: "",
-        license: {
-            deviceId: "",
-            activatedCode: "",
-            activatedForDevice: "",
-            validUnusedCodes: [],
-            usedCodesMap: {}
-        }
+        doctors: ["د. ماهر خليل"],
+        activeDoctor: "د. ماهر خليل",
+        appPassword: ""
     };
 
     let activePatientId = null;
     let selectedToothNum = 11;
     let editingTypeId = null;
-    let paletteMode = "add";
-    let paletteEditingTargetId = null;
-    let modalDateStr = "";
-
-    function getOrCreateDeviceId() {
-        let id = localStorage.getItem("dental_clinic_unique_device_id");
-        if (!id) {
-            const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const t = Date.now().toString(36).toUpperCase();
-            id = `DEV-${t}-${rand}`;
-            localStorage.setItem("dental_clinic_unique_device_id", id);
-        }
-        return id;
-    }
-
-    function ensureLicenseStructure() {
-        if (!db.license || typeof db.license !== "object") {
-            db.license = {};
-        }
-        db.license.deviceId = getOrCreateDeviceId();
-        if (!Array.isArray(db.license.validUnusedCodes) || db.license.validUnusedCodes.length === 0) {
-            db.license.validUnusedCodes = [
-                "CLN-1001-2026-8801",
-                "CLN-1002-2026-8802",
-                "CLN-1003-2026-8803",
-                "CLN-1004-2026-8804",
-                "CLN-1005-2026-8805",
-                "CLN-6935-8470-2196",
-                "CLN-2527-7202-3997",
-                "CLN-9155-7005-0243",
-                "CLN-9642-5861-3260",
-                "CLN-3655-7848-7092",
-                "CLN-9424-6959-1550",
-                "CLN-3623-6839-5170",
-                "CLN-6737-6071-3461",
-                "CLN-6502-8729-4354",
-                "CLN-9386-6174-6619",
-                "CLN-1705-3223-0486",
-                "CLN-8972-8162-8691",
-                "CLN-1223-0103-0699",
-                "CLN-3551-3313-4626",
-                "CLN-4478-4204-3114",
-                "CLN-7968-8384-2557",
-                "CLN-2067-1430-0789",
-                "CLN-8114-3818-6222",
-                "CLN-4781-1264-6929",
-                "CLN-6657-2508-5028",
-                "CLN-7057-6026-0478",
-                "CLN-0732-8279-6424",
-                "CLN-3604-8355-7711",
-                "CLN-8324-3427-5035",
-                "CLN-5722-8945-4912",
-                "CLN-8165-8279-8165",
-                "CLN-1533-1802-2882",
-                "CLN-3404-2395-0577",
-                "CLN-0630-5614-4171",
-                "CLN-1865-8054-6094",
-                "CLN-7316-9142-0771",
-                "CLN-8789-1024-2927",
-                "CLN-4801-0389-7187",
-                "CLN-6726-8493-3380",
-                "CLN-6046-1435-7662",
-                "CLN-4178-6914-8992",
-                "CLN-8319-6427-1316",
-                "CLN-3830-0054-0149",
-                "CLN-1869-5130-4797",
-                "CLN-8576-7179-2960",
-                "CLN-3685-0341-2512",
-                "CLN-5810-5420-2894",
-                "CLN-0692-6635-2488",
-                "CLN-7919-8044-9650",
-                "CLN-8392-9288-0585",
-                "CLN-4753-2201-9585",
-                "CLN-9971-1383-4877",
-                "CLN-4191-9292-1973",
-                "CLN-4399-5564-4798",
-                "CLN-9113-4076-1177"
-            ];
-        }
-        if (!db.license.usedCodesMap || typeof db.license.usedCodesMap !== "object") {
-            db.license.usedCodesMap = {};
-        }
-        db.license.activatedCode = db.license.activatedCode || "";
-        db.license.activatedForDevice = db.license.activatedForDevice || "";
-    }
-
-    function isMasterOwnerSession() {
-        ensureLicenseStructure();
-        return db.license.activatedCode === "DRMAHER-2026" &&
-               db.license.activatedForDevice === db.license.deviceId;
-    }
-
-    function updateLicenseGeneratorVisibility() {
-        const card = document.getElementById("license-generator-card");
-        if (!card) return;
-        card.style.display = isMasterOwnerSession() ? "block" : "none";
-    }
-
-    function checkLicenseAndGate() {
-        ensureLicenseStructure();
-        document.getElementById("gate-device-id").innerText = db.license.deviceId;
-
-        const isLicensedOnThisDevice =
-            Boolean(db.license.activatedCode) &&
-            db.license.activatedForDevice === db.license.deviceId &&
-            db.license.usedCodesMap[db.license.activatedCode] === db.license.deviceId;
-
-        if (isLicensedOnThisDevice) {
-            document.getElementById("activation-gate").style.display = "none";
-            document.getElementById("app-shell").style.display = "block";
-            updateLicenseGeneratorVisibility();
-            if (db.appPassword) {
-                document.getElementById("lock-screen").style.display = "flex";
-            }
-        } else {
-            document.getElementById("activation-gate").style.display = "flex";
-            document.getElementById("app-shell").style.display = "none";
-            document.getElementById("lock-screen").style.display = "none";
-        }
-    }
-
-    function activateAppWithCode() {
-        ensureLicenseStructure();
-        const code = document.getElementById("activation-code-input").value.trim().toUpperCase();
-        const errEl = document.getElementById("gate-error");
-        errEl.innerText = "";
-
-        if (!code) {
-            errEl.innerText = "يرجى إدخال كود التفعيل.";
-            return;
-        }
-
-        if (code === "DRMAHER-2026") {
-            db.license.activatedCode = code;
-            db.license.activatedForDevice = db.license.deviceId;
-            db.license.usedCodesMap[code] = db.license.deviceId;
-            saveDB();
-            checkLicenseAndGate();
-            return;
-        }
-
-        if (db.license.usedCodesMap[code]) {
-            if (db.license.usedCodesMap[code] === db.license.deviceId) {
-                db.license.activatedCode = code;
-                db.license.activatedForDevice = db.license.deviceId;
-                saveDB();
-                checkLicenseAndGate();
-                return;
-            } else {
-                errEl.innerText = "❌ هذا الكود مستخدم مسبقاً على جهاز آخر ولا يعمل إلا على جهازه الأصلي.";
-                return;
-            }
-        }
-
-        const idx = db.license.validUnusedCodes.indexOf(code);
-        if (idx !== -1) {
-            db.license.validUnusedCodes.splice(idx, 1);
-            db.license.usedCodesMap[code] = db.license.deviceId;
-            db.license.activatedCode = code;
-            db.license.activatedForDevice = db.license.deviceId;
-            saveDB();
-            checkLicenseAndGate();
-            return;
-        }
-
-        errEl.innerText = "❌ كود التفعيل غير صحيح.";
-    }
-
-    function randomCodeBlock(len) {
-        let s = "";
-        for (let i = 0; i < len; i++) {
-            s += Math.floor(Math.random() * 10);
-        }
-        return s;
-    }
-
-    function generateBulkActivationCodes() {
-        if (!isMasterOwnerSession()) {
-            alert("غير مسموح لهذه النسخة بتوليد أكواد تفعيل جديدة.");
-            return;
-        }
-        ensureLicenseStructure();
-        const count = Math.min(1000, Math.max(1, Number(document.getElementById("bulk-code-count").value) || 20));
-        const usedOrAvailable = new Set([
-            ...db.license.validUnusedCodes,
-            ...Object.keys(db.license.usedCodesMap)
-        ]);
-        const created = [];
-
-        while (created.length < count) {
-            const candidate = `CLN-${randomCodeBlock(4)}-${randomCodeBlock(4)}-${randomCodeBlock(4)}`;
-            if (!usedOrAvailable.has(candidate)) {
-                usedOrAvailable.add(candidate);
-                created.push(candidate);
-                db.license.validUnusedCodes.push(candidate);
-            }
-        }
-
-        saveDB();
-        document.getElementById("bulk-codes-output").value = created.join("\n");
-        renderLicenseStatsInSettings();
-    }
-
-    function copyBulkCodesText() {
-        if (!isMasterOwnerSession()) return;
-        const box = document.getElementById("bulk-codes-output");
-        if (!box.value.trim()) return;
-        navigator.clipboard.writeText(box.value);
-        alert("✅ تم نسخ الأكواد.");
-    }
-
-    function downloadBulkCodesFile() {
-        if (!isMasterOwnerSession()) return;
-        const text = document.getElementById("bulk-codes-output").value;
-        if (!text.trim()) return;
-        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = `activation_codes_${todayStr()}.txt`;
-        a.click();
-    }
-
-    function renderLicenseStatsInSettings() {
-        updateLicenseGeneratorVisibility();
-        if (!isMasterOwnerSession()) return;
-        ensureLicenseStructure();
-        const unusedCount = db.license.validUnusedCodes.length;
-        const usedEntries = Object.entries(db.license.usedCodesMap);
-        document.getElementById("unused-codes-count").innerText = String(unusedCount);
-        document.getElementById("used-codes-count").innerText = String(usedEntries.length);
-
-        const summaryEl = document.getElementById("used-codes-summary");
-        if (usedEntries.length === 0) {
-            summaryEl.innerText = "لم يتم تفعيل أي كود على أي جهاز بعد.";
-        } else {
-            summaryEl.innerText = "الأكواد المفعّلة وأجهزتها: " +
-                usedEntries.map(([c, d]) => `${c} ← ${d}`).join(" | ");
-        }
-    }
-
-    function getNextPatientFileNumber() {
-        const numericIds = db.patients
-            .map(p => Number(p.fileId))
-            .filter(n => Number.isInteger(n) && n > 0);
-        return numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1;
-    }
+    let editingFeeId = null;
 
     function todayStr() {
         const d = new Date();
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${day}`;
-    }
-
-    function addDaysToDateStr(dateStr, deltaDays) {
-        const base = dateStr || todayStr();
-        const parts = base.split('-');
-        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]) + deltaDays);
         const y = d.getFullYear();
         const m = String(d.getMonth() + 1).padStart(2, '0');
         const day = String(d.getDate()).padStart(2, '0');
@@ -1808,6 +1288,17 @@
         return { items, note: raw.note || "" };
     }
 
+    function populateCategorySelects() {
+        const opts = procedureCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+        document.getElementById('fee-category-input').innerHTML = opts;
+        document.getElementById('proc-category').innerHTML = opts;
+
+        const filterSel = document.getElementById('fee-filter-category');
+        const prevFilter = filterSel.value || "ALL";
+        filterSel.innerHTML = `<option value="ALL">جميع الأنواع</option>` + opts;
+        filterSel.value = prevFilter;
+    }
+
     function populateTimeSelects() {
         const optsHtml = halfHourSlots.map(s =>
             `<option value="${s}" ${s === "4:00 ظهراً" ? "selected" : ""}>${s}</option>`
@@ -1817,7 +1308,7 @@
     }
 
     function loadDB() {
-        const saved = localStorage.getItem('dental_clinic_app_db_v113');
+        const saved = localStorage.getItem('dr_maher_clinic_db_v19');
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -1827,35 +1318,41 @@
             if (!Array.isArray(db.labOrders)) db.labOrders = [];
             if (!Array.isArray(db.generalFinance)) db.generalFinance = [];
             if (!Array.isArray(db.treatmentTypes) || db.treatmentTypes.length === 0) db.treatmentTypes = [...defaultTreatmentTypes];
-            if (!Array.isArray(db.feeItems) || db.feeItems.length === 0) db.feeItems = [...defaultFeeItems];
-            if (!Array.isArray(db.doctors) || db.doctors.length === 0) db.doctors = ["الطبيب"];
+            if (!Array.isArray(db.feeItems) || db.feeItems.length === 0) {
+                db.feeItems = [...defaultFeeItems];
+            } else {
+                db.feeItems = db.feeItems.map(f => ({
+                    ...f,
+                    category: f.category || "مداواة تحفظية (حشوات)"
+                }));
+            }
+            if (!Array.isArray(db.doctors) || db.doctors.length === 0) db.doctors = ["د. ماهر خليل"];
             if (!db.activeDoctor) db.activeDoctor = db.doctors[0];
+        } else {
+            saveDB();
         }
-        ensureLicenseStructure();
-        saveDB();
-
         document.getElementById('proc-date').value = todayStr();
         document.getElementById('pay-date').value = todayStr();
         document.getElementById('lab-start').value = todayStr();
         document.getElementById('fin-date').value = todayStr();
         document.getElementById('schedule-date-input').value = todayStr();
-        modalDateStr = todayStr();
 
+        populateCategorySelects();
         populateTimeSelects();
         updatePasswordUI();
-        checkLicenseAndGate();
+        if (db.appPassword) {
+            document.getElementById('lock-screen').style.display = 'flex';
+        }
         renderAll();
     }
 
     function saveDB() {
-        ensureLicenseStructure();
-        localStorage.setItem('dental_clinic_app_db_v113', JSON.stringify(db));
+        localStorage.setItem('dr_maher_clinic_db_v19', JSON.stringify(db));
     }
 
     function renderAll() {
-        document.getElementById('active-doc-badge').innerText = db.activeDoctor || "الطبيب";
+        document.getElementById('active-doc-badge').innerText = db.activeDoctor || "د. ماهر خليل";
         document.getElementById('today-header-date').innerText = formatDateWithDay(todayStr());
-        updateLicenseGeneratorVisibility();
         renderTodayAppointments();
         renderPatientsList();
         renderAppointmentsPage();
@@ -1864,193 +1361,10 @@
         renderTreatmentTypesSettings();
         renderFeesSettings();
         renderDoctorsSettings();
-        renderLicenseStatsInSettings();
-    }
-
-    function toggleEditPatientInfo() {
-        const box = document.getElementById('edit-patient-info-box');
-        const p = db.patients.find(x => x.uid === activePatientId);
-        if (!box || !p) return;
-
-        if (box.style.display === 'none') {
-            document.getElementById('ep-name').value = p.name || '';
-            document.getElementById('ep-phone').value = p.phone || '';
-            document.getElementById('ep-age').value = p.age || '';
-            document.getElementById('ep-notes').value = p.notes || '';
-            box.style.display = 'block';
-            document.getElementById('ep-phone').focus();
-        } else {
-            box.style.display = 'none';
+        if (activePatientId) {
+            const p = db.patients.find(x => x.uid === activePatientId);
+            if (p) renderPatientAppointmentBanner(p);
         }
-    }
-
-    function savePatientInfoEdit() {
-        const p = db.patients.find(x => x.uid === activePatientId);
-        if (!p) return;
-
-        const name = document.getElementById('ep-name').value.trim();
-        if (!name) {
-            alert("اسم المريض لا يمكن أن يكون فارغاً.");
-            return;
-        }
-
-        const oldName = p.name;
-        p.name = name;
-        p.phone = document.getElementById('ep-phone').value.trim();
-        p.age = document.getElementById('ep-age').value.trim();
-        p.notes = document.getElementById('ep-notes').value.trim();
-
-        (db.labOrders || []).forEach(l => {
-            if (l.patientUid === p.uid || l.patient === oldName) {
-                l.patient = p.name;
-            }
-        });
-
-        saveDB();
-        document.getElementById('pf-name').innerText = p.name;
-        document.getElementById('pf-meta').innerText = `الهاتف: ${p.phone || 'غير مسجل'} | العمر: ${p.age || '-'} | ملاحظات: ${p.notes || 'لا يوجد'}`;
-        document.getElementById('edit-patient-info-box').style.display = 'none';
-        renderPatientsList();
-        renderAppointmentsPage();
-        renderTodayAppointments();
-        renderLabOrders();
-    }
-
-    function openTodaySheetModal() {
-        modalDateStr = todayStr();
-        renderModalScheduleSheet();
-        document.getElementById('today-sheet-modal').style.display = 'flex';
-    }
-
-    function closeTodaySheetModal() {
-        document.getElementById('today-sheet-modal').style.display = 'none';
-    }
-
-    function shiftModalDay(delta) {
-        modalDateStr = addDaysToDateStr(modalDateStr, delta);
-        renderModalScheduleSheet();
-    }
-
-    function setModalDayToToday() {
-        modalDateStr = todayStr();
-        renderModalScheduleSheet();
-    }
-
-    function renderModalScheduleSheet() {
-        const targetDate = modalDateStr || todayStr();
-        document.getElementById('modal-sheet-date-label').innerText = formatDateWithDay(targetDate);
-
-        const dayList = db.patients
-            .filter(p => p.appointment && p.appointment.date === targetDate)
-            .sort((a, b) => halfHourSlots.indexOf(a.appointment.time || "") - halfHourSlots.indexOf(b.appointment.time || ""));
-
-        document.getElementById('modal-sheet-count-badge').innerText = `${dayList.length} موعد`;
-
-        const wrap = document.getElementById('modal-sheet-table-wrap');
-        if (dayList.length === 0) {
-            wrap.innerHTML = `<div style="padding:18px; text-align:center; font-weight:700; color:var(--text-muted); background:#f8fafc; border-radius:10px;">لا توجد مواعيد محجوزة في هذا اليوم.</div>`;
-            return;
-        }
-
-        wrap.innerHTML = `
-            <table class="appt-sheet-table">
-                <thead>
-                    <tr>
-                        <th style="width:36px;">#</th>
-                        <th>الوقت</th>
-                        <th>اسم المريض</th>
-                        <th>الهاتف</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${dayList.map((p, idx) => `
-                        <tr>
-                            <td>${idx + 1}</td>
-                            <td>${p.appointment.time || '-'}</td>
-                            <td>${p.name}</td>
-                            <td>${p.phone || '-'}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        `;
-    }
-
-    function downloadModalScheduleImage() {
-        const targetDate = modalDateStr || todayStr();
-        const dayList = db.patients
-            .filter(p => p.appointment && p.appointment.date === targetDate)
-            .sort((a, b) => halfHourSlots.indexOf(a.appointment.time || "") - halfHourSlots.indexOf(b.appointment.time || ""));
-
-        const rowHeight = 36;
-        const headerHeight = 96;
-        const footerHeight = 32;
-        const canvas = document.createElement('canvas');
-        canvas.width = 760;
-        canvas.height = headerHeight + Math.max(1, dayList.length) * rowHeight + footerHeight;
-        const ctx = canvas.getContext('2d');
-
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#0f766e';
-        ctx.fillRect(0, 0, canvas.width, 64);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.direction = 'rtl';
-        ctx.textAlign = 'right';
-        ctx.font = 'bold 22px Tahoma, Arial, sans-serif';
-        ctx.fillText('إدارة عيادة الأسنان — جدول المواعيد', canvas.width - 24, 39);
-
-        ctx.font = 'bold 15px Tahoma, Arial, sans-serif';
-        ctx.fillStyle = '#020617';
-        ctx.fillText(`التاريخ: ${formatDateWithDay(targetDate)}   |   عدد المواعيد: ${dayList.length}`, canvas.width - 24, 86);
-
-        const tableTop = headerHeight + 4;
-        ctx.fillStyle = '#ccfbf1';
-        ctx.fillRect(24, tableTop, canvas.width - 48, rowHeight);
-        ctx.strokeStyle = '#0f766e';
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(24, tableTop, canvas.width - 48, rowHeight);
-
-        ctx.fillStyle = '#115e59';
-        ctx.font = 'bold 15px Tahoma, Arial, sans-serif';
-        ctx.fillText('الوقت', canvas.width - 40, tableTop + 23);
-        ctx.fillText('اسم المريض', canvas.width - 230, tableTop + 23);
-        ctx.fillText('رقم الهاتف', 165, tableTop + 23);
-
-        if (dayList.length === 0) {
-            const y = tableTop + rowHeight;
-            ctx.fillStyle = '#f8fafc';
-            ctx.fillRect(24, y, canvas.width - 48, rowHeight);
-            ctx.strokeStyle = '#cbd5e1';
-            ctx.strokeRect(24, y, canvas.width - 48, rowHeight);
-            ctx.fillStyle = '#334155';
-            ctx.textAlign = 'center';
-            ctx.fillText('لا توجد مواعيد مسجلة في هذا اليوم', canvas.width / 2, y + 23);
-        } else {
-            dayList.forEach((p, i) => {
-                const y = tableTop + (i + 1) * rowHeight;
-                ctx.fillStyle = i % 2 === 0 ? '#ffffff' : '#f8fafc';
-                ctx.fillRect(24, y, canvas.width - 48, rowHeight);
-                ctx.strokeStyle = '#cbd5e1';
-                ctx.strokeRect(24, y, canvas.width - 48, rowHeight);
-
-                ctx.textAlign = 'right';
-                ctx.fillStyle = '#020617';
-                ctx.font = 'bold 15px Tahoma, Arial, sans-serif';
-                ctx.fillText(p.appointment.time || '-', canvas.width - 40, y + 23);
-                ctx.fillText(p.name, canvas.width - 230, y + 23);
-                ctx.fillText(p.phone || '-', 165, y + 23);
-            });
-        }
-
-        const link = document.createElement('a');
-        link.download = `appointments_${targetDate}.png`;
-        link.href = canvas.toDataURL('image/png');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
     }
 
     function findConflictingPatient(dateVal, timeVal, ignoreUid = null) {
@@ -2124,7 +1438,7 @@
         }
 
         if (isNew) {
-            const nextNum = getNextPatientFileNumber();
+            const nextNum = (db.patients.length > 0 ? Math.max(...db.patients.map(p => Number(p.fileId) || 100)) : 100) + 1;
             targetPatient = {
                 uid: "p_" + Date.now(),
                 fileId: String(nextNum),
@@ -2162,10 +1476,6 @@
     }
 
     function renderAppointmentsPage() {
-        const todayCount = db.patients.filter(p => p.appointment && p.appointment.date === todayStr()).length;
-        const bannerCountEl = document.getElementById('today-banner-count');
-        if (bannerCountEl) bannerCountEl.innerText = `${todayCount} مواعيد اليوم`;
-
         const dateVal = document.getElementById('schedule-date-input').value || todayStr();
         document.getElementById('schedule-day-title').innerText = `اليوم المختار: ${formatDateWithDay(dateVal)}`;
         populateSchedulePatientsDropdown();
@@ -2180,7 +1490,7 @@
                     <div class="slot-row">
                         <div style="display:flex; align-items:center; gap:8px;">
                             <span class="slot-time-badge">${slot}</span>
-                            <span style="font-size:0.82rem; font-weight:700; color:var(--text-muted);">متاح</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted);">متاح</span>
                         </div>
                         <button type="button" class="btn btn-outline btn-sm" onclick="quickBookSlot('${slot}')">+ حجز هذا الوقت</button>
                     </div>
@@ -2193,7 +1503,7 @@
                         <span class="slot-time-badge">${slot}</span>
                         <span class="patient-id-badge">#${p.fileId}</span>
                         <strong>${p.name}</strong>
-                        <span style="font-size:0.78rem; font-weight:600; color:var(--text-muted);">${p.phone || ''}</span>
+                        <span style="font-size:0.78rem; color:var(--text-muted);">${p.phone || ''}</span>
                     </div>
                     <div style="display:flex; flex-wrap:wrap; gap:5px;">
                         <button type="button" class="btn btn-success btn-sm" onclick="sendWhatsAppFromToday('${p.uid}')">📲 واتساب</button>
@@ -2211,7 +1521,7 @@
         let cleanPhone = String(phone || '').replace(/\D/g, '');
         if (cleanPhone.startsWith('09')) cleanPhone = '963' + cleanPhone.substring(1);
         const dateLabel = date ? formatDateWithDay(date) : 'اليوم';
-        const msg = `مرحباً ${name}، نذكّركم بموعدكم في العيادة بتاريخ ${dateLabel} الساعة ${time || '4:00 ظهراً'}. نتمنى لكم دوام الصحة.`;
+        const msg = `مرحباً ${name}، نذكّركم بموعدكم في عيادة الدكتور ماهر خليل بتاريخ ${dateLabel} الساعة ${time || '4:00 ظهراً'}. نتمنى لكم دوام الصحة.`;
         return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
     }
 
@@ -2279,7 +1589,7 @@
             .sort((a, b) => halfHourSlots.indexOf(a.appointment.time || "") - halfHourSlots.indexOf(b.appointment.time || ""));
 
         if (todays.length === 0) {
-            listEl.innerHTML = `<div style="font-size:0.83rem; font-weight:600; color:var(--text-muted);">لا توجد مواعيد مسجلة لليوم. يمكنك الانتقال لتبويب "المواعيد" لحجز أي يوم بسهولة.</div>`;
+            listEl.innerHTML = `<div style="font-size:0.82rem; color:var(--text-muted);">لا توجد مواعيد مسجلة لليوم. يمكنك الانتقال لتبويب "المواعيد" لحجز أي يوم بسهولة.</div>`;
             return;
         }
 
@@ -2290,7 +1600,7 @@
                         <span class="appt-time-tag">⏰ ${p.appointment.time || 'بدون ساعة'}</span>
                         <span class="patient-id-badge" style="margin-right:4px;">#${p.fileId}</span>
                         <strong>${p.name}</strong>
-                        <span style="font-size:0.78rem; font-weight:600; color:var(--text-muted); margin-right:6px;">(${p.phone || 'لا يوجد هاتف'})</span>
+                        <span style="font-size:0.78rem; color:var(--text-muted); margin-right:6px;">(${p.phone || 'لا يوجد هاتف'})</span>
                     </div>
                     <button type="button" class="btn btn-success btn-sm" onclick="sendWhatsAppFromToday('${p.uid}')">📲 تذكير واتساب</button>
                 </div>
@@ -2363,7 +1673,7 @@
 
     function renderDoctorsSettings() {
         document.getElementById('doctors-list-wrap').innerHTML = db.doctors.map(d => `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; background:#f8fafc; border-radius:8px; margin-bottom:6px; font-size:0.84rem; font-weight:700;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; background:#f8fafc; border-radius:8px; margin-bottom:6px; font-size:0.84rem;">
                 <span><strong>${d}</strong> ${db.activeDoctor === d ? '<span style="color:var(--success);">(الطبيب الحالي)</span>' : ''}</span>
                 ${db.activeDoctor !== d ? `<button class="btn btn-outline btn-sm" onclick="setActiveDoctor('${d}')">تعيين كطبيب حالي</button>` : ''}
             </div>
@@ -2389,7 +1699,8 @@
     function toggleNewPatientForm() {
         const box = document.getElementById('new-patient-box');
         if (box.style.display === 'none') {
-            document.getElementById('np-id').value = getNextPatientFileNumber();
+            const nextNum = (db.patients.length > 0 ? Math.max(...db.patients.map(p => Number(p.fileId) || 100)) : 100) + 1;
+            document.getElementById('np-id').value = nextNum;
             box.style.display = 'block';
         } else {
             box.style.display = 'none';
@@ -2397,7 +1708,7 @@
     }
 
     function createPatient() {
-        const nextNum = getNextPatientFileNumber();
+        const nextNum = (db.patients.length > 0 ? Math.max(...db.patients.map(p => Number(p.fileId) || 100)) : 100) + 1;
         const fileId = document.getElementById('np-id').value.trim() || nextNum;
         const name = document.getElementById('np-name').value.trim();
         const phone = document.getElementById('np-phone').value.trim();
@@ -2450,24 +1761,30 @@
         );
 
         if (filtered.length === 0) {
-            container.innerHTML = `<div class="card" style="text-align:center; font-weight:600; color:var(--text-muted);">لا يوجد مرضى مطابقون. اضغط على "+ مريض جديد" لفتح ملف.</div>`;
+            container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted);">لا يوجد مرضى مطابقون. اضغط على "+ مريض جديد" لفتح ملف.</div>`;
             return;
         }
 
         container.innerHTML = filtered.map(p => {
             const bal = calcPatientBalance(p);
             const lastProc = (p.procedures && p.procedures.length > 0) ? p.procedures[p.procedures.length - 1] : null;
+            const hasAppt = !!(p.appointment && p.appointment.date);
             return `
                 <div class="patient-row">
                     <div class="patient-row-header" onclick="toggleQuickPreview('${p.uid}')">
                         <div>
                             <span class="patient-id-badge">#${p.fileId}</span>
                             <strong>${p.name}</strong>
-                            <span style="font-size:0.8rem; font-weight:600; color:var(--text-muted); margin-right:8px;">${p.phone || ''}</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted); margin-right:8px;">${p.phone || ''}</span>
+                            ${hasAppt ? `<span class="appt-time-tag" style="margin-right:6px;">📅 ${formatDateWithDay(p.appointment.date)} (${p.appointment.time || ''})</span>` : ''}
                         </div>
-                        <span style="font-size:0.8rem; font-weight:700; color:var(--primary);">▼ تفاصيل سريعة</span>
+                        <span style="font-size:0.8rem; color:var(--primary);">▼ تفاصيل سريعة</span>
                     </div>
                     <div class="patient-quick-preview" id="preview-${p.uid}">
+                        <div style="margin-bottom:6px;">
+                            <strong>📅 الموعد القادم:</strong>
+                            ${hasAppt ? `${formatDateWithDay(p.appointment.date)} — الساعة ${p.appointment.time || '4:00 ظهراً'}` : 'لا يوجد موعد مسجل'}
+                        </div>
                         <div style="margin-bottom:6px;">
                             <strong>🩺 آخر جلسة عمل مسجلة:</strong> 
                             ${lastProc ? `${lastProc.desc} <span style="color:var(--text-muted);">(${formatDateWithDay(lastProc.date)})</span>` : 'لا توجد جلسات مسجلة بعد'}
@@ -2475,11 +1792,11 @@
                         <div style="margin-bottom:10px;">
                             <strong>💰 حساب المريض:</strong> 
                             الإجمالي: ${bal.total.toLocaleString()} | المدفوع: ${bal.paid.toLocaleString()} | 
-                            <span style="color:${bal.rem > 0 ? 'var(--danger)' : 'var(--success)'}; font-weight:700;">
+                            <span style="color:${bal.rem > 0 ? 'var(--danger)' : 'var(--success)'}; font-weight:bold;">
                                 المطلوب: ${bal.rem.toLocaleString()}
                             </span>
                         </div>
-                        <div style="display:flex; gap:8px;">
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
                             <button class="btn btn-sm" onclick="openPatientFile('${p.uid}')">📂 فتح ملف المريض المستقل</button>
                             <button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deletePatient('${p.uid}')">حذف</button>
                         </div>
@@ -2500,6 +1817,23 @@
         renderAll();
     }
 
+    function renderPatientAppointmentBanner(p) {
+        const badgeEl = document.getElementById('pf-next-appt-badge');
+        const infoEl = document.getElementById('pview-appt-current-info');
+        const hasAppt = !!(p.appointment && p.appointment.date);
+
+        if (hasAppt) {
+            const label = `📅 الموعد القادم: ${formatDateWithDay(p.appointment.date)} — الساعة ${p.appointment.time || '4:00 ظهراً'}`;
+            badgeEl.className = "upcoming-appt-banner has-appt";
+            badgeEl.innerHTML = `<span>${label}</span>`;
+            infoEl.innerHTML = `<div class="upcoming-appt-banner has-appt">${label}</div>`;
+        } else {
+            badgeEl.className = "upcoming-appt-banner no-appt";
+            badgeEl.innerHTML = `<span>📅 لا يوجد موعد قادم مسجل لهذا المريض</span>`;
+            infoEl.innerHTML = `<div class="upcoming-appt-banner no-appt">لا يوجد موعد مسجل حالياً — اختر التاريخ والوقت واضغط حفظ الموعد</div>`;
+        }
+    }
+
     function openPatientFile(uid) {
         activePatientId = uid;
         const p = db.patients.find(x => x.uid === uid);
@@ -2517,7 +1851,7 @@
         document.getElementById('pf-id-badge').innerText = `ملف #${p.fileId}`;
         document.getElementById('pf-name').innerText = p.name;
         document.getElementById('pf-meta').innerText = `الهاتف: ${p.phone || 'غير مسجل'} | العمر: ${p.age || '-'} | ملاحظات: ${p.notes || 'لا يوجد'}`;
-        document.getElementById('edit-patient-info-box').style.display = 'none';
+        renderPatientAppointmentBanner(p);
 
         document.getElementById('pf-plan-text').value = p.planText || '';
         document.getElementById('pf-next-step').value = p.nextStep || '';
@@ -2527,19 +1861,27 @@
         }
 
         selectedToothNum = 11;
-        paletteMode = "add";
-        paletteEditingTargetId = null;
-        document.getElementById('palette-editor-panel').style.display = 'none';
-        document.getElementById('account-fee-editor').style.display = 'none';
-        document.getElementById('quick-payment-box').style.display = 'none';
-
         populateDoctorsSelect();
+        populateCategorySelects();
         populateFeesSelect();
         renderPaletteChips();
         renderDentalChart(p);
         renderPatientAccount(p);
         renderPatientPhotos(p);
         switchPatientTab('teeth');
+    }
+
+    function openAddAppointmentInFile() {
+        const p = db.patients.find(x => x.uid === activePatientId);
+        if (!p) return;
+        if (!document.getElementById('appt-date').value) {
+            document.getElementById('appt-date').value = p.appointment?.date || todayStr();
+        }
+        if (p.appointment?.time && halfHourSlots.includes(p.appointment.time)) {
+            document.getElementById('appt-time').value = p.appointment.time;
+        }
+        renderPatientAppointmentBanner(p);
+        switchPatientTab('appt');
     }
 
     function closePatientFile() {
@@ -2551,7 +1893,8 @@
         document.querySelectorAll('.pview').forEach(v => v.style.display = 'none');
         document.querySelectorAll('.p-tab').forEach(t => t.classList.remove('active'));
         document.getElementById(`pview-${tab}`).style.display = 'block';
-        document.getElementById(`ptab-${tab}`).classList.add('active');
+        const tabBtn = document.getElementById(`ptab-${tab}`);
+        if (tabBtn) tabBtn.classList.add('active');
     }
 
     function getToothV2SVG(items, isLower) {
@@ -2560,223 +1903,22 @@
         return `
         <svg class="tooth-v2-svg" viewBox="0 0 24 32">
             ${isLower
-                ? `<path d="M8 4 L16 4 L14.5 16 L9.5 16 Z" fill="#f1f5f9" stroke="#475569" stroke-width="1.3"/>
-                   <rect x="4" y="16" width="16" height="13" rx="4" fill="${color}" stroke="#020617" stroke-width="1.5"/>`
-                : `<rect x="4" y="3" width="16" height="13" rx="4" fill="${color}" stroke="#020617" stroke-width="1.5"/>
-                   <path d="M8 16 L16 16 L14.5 28 L9.5 28 Z" fill="#f1f5f9" stroke="#475569" stroke-width="1.3"/>`
+                ? `<path d="M8 4 L16 4 L14.5 16 L9.5 16 Z" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
+                   <rect x="4" y="16" width="16" height="13" rx="4" fill="${color}" stroke="#0f172a" stroke-width="1.4"/>`
+                : `<rect x="4" y="3" width="16" height="13" rx="4" fill="${color}" stroke="#0f172a" stroke-width="1.4"/>
+                   <path d="M8 16 L16 16 L14.5 28 L9.5 28 Z" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>`
             }
-            ${secondColor ? `<circle cx="17.5" cy="${isLower ? 22.5 : 9.5}" r="3.2" fill="${secondColor}" stroke="#020617" stroke-width="1.1"/>` : ''}
+            ${secondColor ? `<circle cx="17.5" cy="${isLower ? 22.5 : 9.5}" r="3.2" fill="${secondColor}" stroke="#0f172a" stroke-width="1"/>` : ''}
         </svg>`;
     }
 
-    function findFeePriceByTreatmentName(name) {
-        const clean = String(name || "").trim();
-        let found = db.feeItems.find(f => f.name.trim() === clean);
-        if (!found && clean === "حشوة") {
-            found = db.feeItems.find(f => f.name.trim().includes("حشوة"));
-        }
-        if (!found && clean.includes("قلع")) {
-            found = db.feeItems.find(f => f.name.trim().includes("قلع"));
-        }
-        return found ? Number(found.price || 0) : 0;
-    }
-
-    function addAutoProcedureForPatient(p, desc, cost, linkedKey) {
-        p.procedures.push({
-            id: "pr_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
-            desc,
-            cost: Number(cost) || 0,
-            date: todayStr(),
-            doctor: db.activeDoctor || "الطبيب",
-            linkedKey: linkedKey || ""
-        });
-    }
-
-    function isLaboratoryTreatment(name) {
-        const labKeywords = ["تتويج", "خزف", "زيركون", "جسر", "تعويض", "فينير", "وجوه", "طقم"];
-        return labKeywords.some(k => String(name || "").includes(k));
-    }
-
-    function toggleQuickPaymentBox() {
-        const box = document.getElementById('quick-payment-box');
-        if (!box) return;
-        box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        if (box.style.display === 'block') {
-            document.getElementById('quick-pay-amount').focus();
-        }
-    }
-
-    function addQuickPaymentFromFirstPage() {
-        const amount = Number(document.getElementById('quick-pay-amount').value) || 0;
-        const note = document.getElementById('quick-pay-note').value.trim();
-        if (amount <= 0) {
-            alert("يرجى إدخال مبلغ صحيح.");
-            return;
-        }
-        const p = db.patients.find(x => x.uid === activePatientId);
-        if (!p) return;
-
-        p.payments.push({
-            id: "py_" + Date.now(),
-            amount,
-            date: todayStr(),
-            note
-        });
-        saveDB();
-        document.getElementById('quick-pay-amount').value = '';
-        document.getElementById('quick-pay-note').value = '';
-        document.getElementById('quick-payment-box').style.display = 'none';
-        renderPatientAccount(p);
-    }
-
-    function openPaletteAddForm() {
-        paletteMode = "add";
-        paletteEditingTargetId = null;
-        document.getElementById('palette-editor-title').innerText = "➕ إضافة معالجة جديدة باسم ولون";
-        document.getElementById('pal-proc-name').value = "";
-        document.getElementById('pal-proc-color').value = "#ec4899";
-        document.getElementById('pal-proc-price').value = "";
-        document.getElementById('palette-editor-panel').style.display = 'block';
-        renderPaletteChips();
-    }
-
-    function togglePaletteEditMode() {
-        if (paletteMode === "edit") {
-            paletteMode = "add";
-            paletteEditingTargetId = null;
-            document.getElementById('palette-editor-panel').style.display = 'none';
-        } else {
-            paletteMode = "edit";
-            alert("اختر المعالجة التي تريد تعديل اسمها ولونها من القائمة اللونية أعلاه.");
-        }
-        renderPaletteChips();
-    }
-
-    function togglePaletteDeleteMode() {
-        if (paletteMode === "delete") {
-            paletteMode = "add";
-        } else {
-            paletteMode = "delete";
-            alert("اختر المعالجة التي تريد حذفها من القائمة اللونية أعلاه.");
-        }
-        renderPaletteChips();
-    }
-
-    function closePaletteEditor() {
-        paletteMode = "add";
-        paletteEditingTargetId = null;
-        document.getElementById('palette-editor-panel').style.display = 'none';
-        renderPaletteChips();
-    }
-
-    function handlePaletteChipClick(typeId) {
-        const tt = db.treatmentTypes.find(t => t.id === typeId);
-        if (!tt) return;
-
-        if (paletteMode === "edit") {
-            paletteEditingTargetId = typeId;
-            const linkedFee = db.feeItems.find(f => f.name.trim() === tt.name.trim());
-            document.getElementById('palette-editor-title').innerText = `✏️ تعديل المعالجة: ${tt.name}`;
-            document.getElementById('pal-proc-name').value = tt.name;
-            document.getElementById('pal-proc-color').value = tt.color || "#3b82f6";
-            document.getElementById('pal-proc-price').value = linkedFee ? linkedFee.price : "";
-            document.getElementById('palette-editor-panel').style.display = 'block';
-            return;
-        }
-
-        if (paletteMode === "delete") {
-            if (!confirm(`هل تريد حذف المعالجة (${tt.name}) من القائمة اللونية؟`)) return;
-            db.treatmentTypes = db.treatmentTypes.filter(t => t.id !== typeId);
-            paletteMode = "add";
-            saveDB();
-            renderPaletteChips();
-            renderTreatmentTypesSettings();
-            return;
-        }
-
-        addTreatmentToSelectedTooth(typeId);
-    }
-
-    function savePaletteTreatment() {
-        const newName = document.getElementById('pal-proc-name').value.trim();
-        const newColor = document.getElementById('pal-proc-color').value || "#3b82f6";
-        const priceRaw = document.getElementById('pal-proc-price').value.trim();
-        const hasPrice = priceRaw !== "";
-        const priceVal = hasPrice ? (Number(priceRaw) || 0) : null;
-
-        if (!newName) {
-            alert("يرجى إدخال اسم المعالجة.");
-            return;
-        }
-
-        const p = db.patients.find(x => x.uid === activePatientId);
-
-        if (paletteMode === "edit" && paletteEditingTargetId) {
-            const idx = db.treatmentTypes.findIndex(t => t.id === paletteEditingTargetId);
-            if (idx !== -1) {
-                const oldName = db.treatmentTypes[idx].name;
-                db.treatmentTypes[idx] = { ...db.treatmentTypes[idx], name: newName, color: newColor };
-
-                if (p && p.teeth) {
-                    Object.keys(p.teeth).forEach(tNum => {
-                        const td = normalizeToothData(p.teeth[tNum]);
-                        let changed = false;
-                        td.items.forEach(it => {
-                            if (it.name === oldName) {
-                                it.name = newName;
-                                it.color = newColor;
-                                changed = true;
-                            }
-                        });
-                        if (changed) p.teeth[tNum] = td;
-                    });
-                }
-
-                const feeIdx = db.feeItems.findIndex(f => f.name.trim() === oldName.trim());
-                if (feeIdx !== -1) {
-                    db.feeItems[feeIdx].name = newName;
-                    if (hasPrice) db.feeItems[feeIdx].price = priceVal;
-                } else if (hasPrice) {
-                    db.feeItems.push({ id: "f_" + Date.now(), name: newName, price: priceVal });
-                }
-            }
-        } else {
-            db.treatmentTypes.push({ id: "tt_" + Date.now(), name: newName, color: newColor });
-            if (hasPrice) {
-                const existingFee = db.feeItems.find(f => f.name.trim() === newName);
-                if (existingFee) {
-                    existingFee.price = priceVal;
-                } else {
-                    db.feeItems.push({ id: "f_" + Date.now(), name: newName, price: priceVal });
-                }
-            }
-        }
-
-        saveDB();
-        closePaletteEditor();
-        populateFeesSelect();
-        renderTreatmentTypesSettings();
-        renderFeesSettings();
-        if (p) {
-            renderDentalChart(p);
-            if (selectedToothNum) selectTooth(selectedToothNum);
-        }
-    }
-
     function renderPaletteChips() {
-        const modeHint = paletteMode === "edit"
-            ? `<div style="font-size:0.78rem; color:var(--accent); font-weight:700; margin-top:4px;">وضع التعديل مفعّل: اضغط على أي معالجة لتعديل اسمها ولونها.</div>`
-            : paletteMode === "delete"
-                ? `<div style="font-size:0.78rem; color:var(--danger); font-weight:700; margin-top:4px;">وضع الحذف مفعّل: اضغط على أي معالجة لحذفها.</div>`
-                : "";
-
-        document.getElementById('palette-chips-container').innerHTML =
-            db.treatmentTypes.map(tt => `
-                <button type="button" class="color-chip ${paletteMode !== 'add' ? 'manage-mode' : ''}" onclick="handlePaletteChipClick('${tt.id}')">
-                    <span class="chip-dot" style="background:${tt.color};"></span>
-                    <span>${tt.name}</span>
-                </button>
-            `).join('') + modeHint;
+        document.getElementById('palette-chips-container').innerHTML = db.treatmentTypes.map(tt => `
+            <button type="button" class="color-chip" onclick="addTreatmentToSelectedTooth('${tt.id}')">
+                <span class="chip-dot" style="background:${tt.color};"></span>
+                <span>${tt.name}</span>
+            </button>
+        `).join('');
     }
 
     function selectTooth(num) {
@@ -2799,44 +1941,16 @@
         const tData = normalizeToothData(p.teeth[selectedToothNum]);
 
         if (!tData.items.some(i => i.name === tt.name)) {
-            const itemId = "ti_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
-            const linkedKey = `tooth_${selectedToothNum}_${itemId}`;
-
             tData.items.push({
-                id: itemId,
+                id: "ti_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
                 name: tt.name,
                 color: tt.color
             });
-
-            const autoPrice = findFeePriceByTreatmentName(tt.name);
-            addAutoProcedureForPatient(
-                p,
-                `${tt.name} (السن #${selectedToothNum})`,
-                autoPrice,
-                linkedKey
-            );
-
-            if (isLaboratoryTreatment(tt.name)) {
-                db.labOrders.unshift({
-                    id: "lab_" + Date.now() + "_" + Math.random().toString(36).slice(2, 4),
-                    patient: p.name,
-                    patientUid: p.uid,
-                    toothNum: selectedToothNum,
-                    type: `${tt.name} (السن #${selectedToothNum})`,
-                    shade: "",
-                    cost: 0,
-                    start: todayStr(),
-                    due: "",
-                    linkedKey: linkedKey
-                });
-            }
         }
 
         p.teeth[selectedToothNum] = tData;
         saveDB();
         renderDentalChart(p);
-        renderPatientAccount(p);
-        renderLabOrders();
         selectTooth(selectedToothNum);
     }
 
@@ -2845,35 +1959,21 @@
         const tData = normalizeToothData(p.teeth[toothNum]);
         tData.items = tData.items.filter(i => i.id !== itemId);
 
-        const targetKey = `tooth_${toothNum}_${itemId}`;
-        p.procedures = (p.procedures || []).filter(pr => pr.linkedKey !== targetKey);
-        db.labOrders = (db.labOrders || []).filter(l => l.linkedKey !== targetKey);
-
         if (tData.items.length === 0 && !tData.note) delete p.teeth[toothNum];
         else p.teeth[toothNum] = tData;
 
         saveDB();
         renderDentalChart(p);
-        renderPatientAccount(p);
-        renderLabOrders();
         if (selectedToothNum === toothNum) selectTooth(toothNum);
     }
 
     function clearSelectedToothAll() {
         if (!selectedToothNum) return;
         const p = db.patients.find(x => x.uid === activePatientId);
-        const tData = normalizeToothData(p.teeth[selectedToothNum]);
-        const keysToRemove = tData.items.map(it => `tooth_${selectedToothNum}_${it.id}`);
-        if (keysToRemove.length > 0) {
-            db.labOrders = (db.labOrders || []).filter(l => !keysToRemove.includes(l.linkedKey));
-            p.procedures = (p.procedures || []).filter(pr => !keysToRemove.includes(pr.linkedKey));
-        }
         delete p.teeth[selectedToothNum];
         document.getElementById('te-note').value = '';
         saveDB();
         renderDentalChart(p);
-        renderPatientAccount(p);
-        renderLabOrders();
         selectTooth(selectedToothNum);
     }
 
@@ -2894,11 +1994,8 @@
     function addCleaningSession() {
         const p = db.patients.find(x => x.uid === activePatientId);
         p.cleaningSessions = (p.cleaningSessions || 0) + 1;
-        const price = findFeePriceByTreatmentName("جلسة تنظيف أسنان");
-        addAutoProcedureForPatient(p, "جلسة تنظيف أسنان", price, "cleaning_session");
         saveDB();
         renderDentalChart(p);
-        renderPatientAccount(p);
     }
 
     function resetCleaningSessions() {
@@ -2911,10 +2008,6 @@
     function toggleOrthoArch(mode) {
         const p = db.patients.find(x => x.uid === activePatientId);
         if (!p.orthoFixed) p.orthoFixed = { upper: false, lower: false };
-        const wasActive = (mode === 'upper' && p.orthoFixed.upper) ||
-                          (mode === 'lower' && p.orthoFixed.lower) ||
-                          (mode === 'both' && p.orthoFixed.upper && p.orthoFixed.lower);
-
         if (mode === 'upper') p.orthoFixed.upper = !p.orthoFixed.upper;
         else if (mode === 'lower') p.orthoFixed.lower = !p.orthoFixed.lower;
         else if (mode === 'both') {
@@ -2922,42 +2015,17 @@
             p.orthoFixed.upper = nextState;
             p.orthoFixed.lower = nextState;
         }
-
-        if (!wasActive) {
-            const labelMap = {
-                upper: "تقويم أسنان ثابت علوي",
-                lower: "تقويم أسنان ثابت سفلي",
-                both: "تقويم أسنان ثابت فكين"
-            };
-            const price = findFeePriceByTreatmentName("تقويم أسنان");
-            addAutoProcedureForPatient(p, labelMap[mode], price, `ortho_${mode}`);
-        }
-
         saveDB();
         renderDentalChart(p);
-        renderPatientAccount(p);
     }
 
     function cycleRemovableAppliance() {
         const p = db.patients.find(x => x.uid === activePatientId);
         const order = ["none", "upper", "lower", "both"];
         const idx = order.indexOf(p.removableAppliance || "none");
-        const nextVal = order[(idx + 1) % order.length];
-        p.removableAppliance = nextVal;
-
-        if (nextVal !== "none") {
-            const remNames = {
-                upper: "جهاز تقويم متحرك علوي",
-                lower: "جهاز تقويم متحرك سفلي",
-                both: "جهاز تقويم متحرك فكين"
-            };
-            const price = findFeePriceByTreatmentName("تقويم أسنان");
-            addAutoProcedureForPatient(p, remNames[nextVal], price, `rem_${nextVal}`);
-        }
-
+        p.removableAppliance = order[(idx + 1) % order.length];
         saveDB();
         renderDentalChart(p);
-        renderPatientAccount(p);
     }
 
     function renderDentalChart(p) {
@@ -3022,7 +2090,7 @@
             .filter(x => x.data.items.length > 0 || x.data.note);
 
         if (entries.length === 0 && !(p.cleaningSessions > 0)) {
-            listEl.innerHTML = `<div style="font-size:0.82rem; font-weight:600; color:var(--text-muted);">لم يتم إضافة معالجات على الأسنان بعد.</div>`;
+            listEl.innerHTML = `<div style="font-size:0.8rem; color:var(--text-muted);">لم يتم إضافة معالجات على الأسنان بعد.</div>`;
             return;
         }
 
@@ -3041,7 +2109,7 @@
                         <button type="button" class="del-proc-x" title="حذف المعالجة" onclick="removeSingleToothTreatment(${num}, '${it.id}')">×</button>
                     </span>
                 `).join('')}
-                ${data.note ? `<span style="color:var(--text-muted); font-size:0.78rem;">(${data.note})</span>` : ''}
+                ${data.note ? `<span style="color:var(--text-muted); font-size:0.76rem;">(${data.note})</span>` : ''}
             </div>
         `).join('');
 
@@ -3058,14 +2126,10 @@
 
     function populateFeesSelect() {
         const sel = document.getElementById('preset-proc-select');
-        const prevVal = sel.value;
-        sel.innerHTML = `<option value="">-- اختر من قائمة الأسعار الثابتة --</option>` +
+        sel.innerHTML = `<option value="">-- اختر من قائمة الأسعار أو أدخل قيمة حرة --</option>` +
             db.feeItems.map(f =>
-                `<option value="${f.id}">${f.name} — ${Number(f.price).toLocaleString()}</option>`
+                `<option value="${f.id}">${f.name} [${f.category || 'عام'}] — ${Number(f.price).toLocaleString()}</option>`
             ).join('');
-        if (db.feeItems.some(f => f.id === prevVal)) {
-            sel.value = prevVal;
-        }
     }
 
     function applyPresetProcedure() {
@@ -3074,91 +2138,15 @@
         if (found) {
             document.getElementById('proc-desc').value = found.name;
             document.getElementById('proc-cost').value = found.price;
-            document.getElementById('edit-fee-name').value = found.name;
-            document.getElementById('edit-fee-price').value = found.price;
-        }
-    }
-
-    function toggleAccountFeeEditor() {
-        const panel = document.getElementById('account-fee-editor');
-        if (panel.style.display === 'none') {
-            const selId = document.getElementById('preset-proc-select').value;
-            const found = db.feeItems.find(f => f.id === selId) || db.feeItems[0];
-            if (found) {
-                document.getElementById('edit-fee-name').value = found.name;
-                document.getElementById('edit-fee-price').value = found.price;
-            } else {
-                document.getElementById('edit-fee-name').value = "";
-                document.getElementById('edit-fee-price').value = "0";
+            if (found.category && procedureCategories.includes(found.category)) {
+                document.getElementById('proc-category').value = found.category;
             }
-            panel.style.display = 'block';
-        } else {
-            panel.style.display = 'none';
         }
-    }
-
-    function saveAccountFeeEdit() {
-        const selId = document.getElementById('preset-proc-select').value;
-        const newName = document.getElementById('edit-fee-name').value.trim();
-        const newPrice = Number(document.getElementById('edit-fee-price').value) || 0;
-
-        if (!newName) {
-            alert("يرجى إدخال اسم المعالجة.");
-            return;
-        }
-
-        const target = db.feeItems.find(f => f.id === selId);
-        if (!target) {
-            addNewAccountFeeFromTab();
-            return;
-        }
-
-        const oldName = target.name;
-        target.name = newName;
-        target.price = newPrice;
-
-        const tt = db.treatmentTypes.find(t => t.name.trim() === oldName.trim());
-        if (tt) tt.name = newName;
-
-        saveDB();
-        populateFeesSelect();
-        document.getElementById('preset-proc-select').value = target.id;
-        document.getElementById('proc-desc').value = newName;
-        document.getElementById('proc-cost').value = newPrice;
-        renderFeesSettings();
-        renderTreatmentTypesSettings();
-        if (activePatientId) renderPaletteChips();
-        document.getElementById('account-fee-editor').style.display = 'none';
-    }
-
-    function addNewAccountFeeFromTab() {
-        const newName = document.getElementById('edit-fee-name').value.trim();
-        const newPrice = Number(document.getElementById('edit-fee-price').value) || 0;
-        if (!newName) {
-            alert("يرجى إدخال اسم المعالجة الجديدة.");
-            return;
-        }
-
-        const newItem = { id: "f_" + Date.now(), name: newName, price: newPrice };
-        db.feeItems.push(newItem);
-
-        if (!db.treatmentTypes.some(t => t.name.trim() === newName)) {
-            db.treatmentTypes.push({ id: "tt_" + Date.now(), name: newName, color: "#0284c7" });
-        }
-
-        saveDB();
-        populateFeesSelect();
-        document.getElementById('preset-proc-select').value = newItem.id;
-        document.getElementById('proc-desc').value = newName;
-        document.getElementById('proc-cost').value = newPrice;
-        renderFeesSettings();
-        renderTreatmentTypesSettings();
-        if (activePatientId) renderPaletteChips();
-        document.getElementById('account-fee-editor').style.display = 'none';
     }
 
     function addProcedure() {
         const desc = document.getElementById('proc-desc').value.trim();
+        const category = document.getElementById('proc-category').value || "مداواة تحفظية (حشوات)";
         const cost = Number(document.getElementById('proc-cost').value) || 0;
         const date = document.getElementById('proc-date').value || todayStr();
         const doctor = document.getElementById('proc-doctor').value || db.activeDoctor;
@@ -3166,7 +2154,7 @@
         if (!desc) { alert("يرجى كتابة وصف الإجراء."); return; }
 
         const p = db.patients.find(x => x.uid === activePatientId);
-        p.procedures.push({ id: "pr_" + Date.now(), desc, cost, date, doctor });
+        p.procedures.push({ id: "pr_" + Date.now(), desc, category, cost, date, doctor });
         saveDB();
         document.getElementById('proc-desc').value = '';
         document.getElementById('proc-cost').value = '0';
@@ -3222,17 +2210,11 @@
         document.getElementById('acc-paid').innerText = bal.paid.toLocaleString();
         document.getElementById('acc-rem').innerText = bal.rem.toLocaleString();
 
-        const topTotalEl = document.getElementById('top-acc-total');
-        const topPaidEl = document.getElementById('top-acc-paid');
-        const topRemEl = document.getElementById('top-acc-rem');
-        if (topTotalEl) topTotalEl.innerText = bal.total.toLocaleString();
-        if (topPaidEl) topPaidEl.innerText = bal.paid.toLocaleString();
-        if (topRemEl) topRemEl.innerText = bal.rem.toLocaleString();
-
         let rows = [];
         (p.procedures || []).forEach(pr => rows.push({
             id: pr.id, kind: 'proc', date: pr.date, type: 'معالجة',
-            desc: pr.desc, amountText: `+${Number(pr.cost).toLocaleString()}`, color: 'var(--text-dark)'
+            desc: `${pr.desc} ${pr.category ? `<span class="category-badge">${pr.category}</span>` : ''}`,
+            amountText: `+${Number(pr.cost).toLocaleString()}`, color: 'var(--text-dark)'
         }));
         (p.payments || []).forEach(py => rows.push({
             id: py.id, kind: 'pay', date: py.date, type: 'دفعة مقبوضة',
@@ -3240,7 +2222,7 @@
         }));
         rows.sort((a, b) => b.date.localeCompare(a.date));
 
-        document.getElementById('account-ledger').innerHTML = rows.length === 0 ? '<p style="font-weight:600; color:var(--text-muted);">لا توجد حركات مسجلة.</p>' : `
+        document.getElementById('account-ledger').innerHTML = rows.length === 0 ? '<p style="color:var(--text-muted);">لا توجد حركات مسجلة.</p>' : `
             <table>
                 <thead><tr><th>اليوم والتاريخ</th><th>النوع</th><th>المعالجة / البيان</th><th>القيمة</th><th>إدارة</th></tr></thead>
                 <tbody>
@@ -3249,7 +2231,7 @@
                             <td>${formatDateWithDay(r.date)}</td>
                             <td>${r.type}</td>
                             <td>${r.desc}</td>
-                            <td style="color:${r.color}; font-weight:700;">${r.amountText}</td>
+                            <td style="color:${r.color}; font-weight:bold;">${r.amountText}</td>
                             <td style="white-space:nowrap;">
                                 ${r.kind === 'pay' ? `<button class="btn btn-outline btn-sm" onclick="editPaymentConfirmed('${r.id}')">تعديل الدفع</button>` : ''}
                                 <button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteAccountItemConfirmed('${r.kind}', '${r.id}')">حذف</button>
@@ -3269,7 +2251,7 @@
         const rowsHtml = (p.procedures || []).map(pr => `
             <tr>
                 <td>${formatDateWithDay(pr.date)}</td>
-                <td>${pr.desc}</td>
+                <td>${pr.desc} ${pr.category ? `(${pr.category})` : ''}</td>
                 <td>${Number(pr.cost || 0).toLocaleString()}</td>
             </tr>
         `).join('');
@@ -3277,8 +2259,8 @@
         document.getElementById('printable-statement').innerHTML = `
             <div class="print-header">
                 <div>
-                    <h2 style="margin:0; color:#0f766e;">كشف حساب معالجات المريض</h2>
-                    <div style="font-size:0.9rem; margin-top:4px;">سجل المعالجات والمدفوعات</div>
+                    <h2 style="margin:0; color:#0f766e;">عيادة د. ماهر خليل لطب الأسنان</h2>
+                    <div style="font-size:0.9rem; margin-top:4px;">كشف حساب معالجات المريض</div>
                 </div>
                 <div style="text-align:left; font-size:0.88rem;">
                     <div><strong>اسم المريض:</strong> ${p.name}</div>
@@ -3307,7 +2289,7 @@
             </div>
 
             <div class="stamp-box">
-                <div style="font-size:0.88rem; color:#334155;">الطبيب: ${db.activeDoctor || 'الطبيب'}</div>
+                <div style="font-size:0.88rem; color:#334155;">الطبيب: ${db.activeDoctor || 'د. ماهر خليل'}</div>
                 <div class="stamp-area">ختم الطبيب</div>
             </div>
         `;
@@ -3336,7 +2318,7 @@
         document.getElementById('patient-photos-grid').innerHTML = (p.photos || []).map(ph => `
             <div class="photo-card">
                 <img src="${ph.src}" onclick="window.open('${ph.src}', '_blank')">
-                <div style="padding:6px; font-size:0.76rem; font-weight:700;">
+                <div style="padding:6px; font-size:0.76rem;">
                     <strong>${ph.label}</strong><br>
                     <span style="color:var(--text-muted);">${formatDateWithDay(ph.date)}</span>
                 </div>
@@ -3389,55 +2371,21 @@
         renderLabOrders();
     }
 
-    function updateLabOrderField(id, field, value) {
-        const order = db.labOrders.find(l => l.id === id);
-        if (!order) return;
-        order[field] = (field === 'cost') ? (Number(value) || 0) : value;
-        saveDB();
-    }
-
     function renderLabOrders() {
         const wrap = document.getElementById('lab-table-wrap');
-        wrap.innerHTML = db.labOrders.length === 0 ? '<p style="font-weight:600; color:var(--text-muted);">لا توجد أعمال مخبرية مسجلة.</p>' : `
+        wrap.innerHTML = db.labOrders.length === 0 ? '<p style="color:var(--text-muted);">لا توجد أعمال مخبرية مسجلة.</p>' : `
             <table>
-                <thead>
-                    <tr>
-                        <th>المريض</th>
-                        <th>نوع العمل والسن</th>
-                        <th>اللون (Shade)</th>
-                        <th>التكلفة المخبرية</th>
-                        <th>تاريخ الإرسال</th>
-                        <th>تاريخ التسليم</th>
-                        <th>إدارة</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>المريض</th><th>نوع العمل</th><th>اللون</th><th>التكلفة</th><th>البدء</th><th>التسليم</th><th></th></tr></thead>
                 <tbody>
                     ${db.labOrders.map(l => `
                         <tr>
                             <td><strong>${l.patient}</strong></td>
-                            <td>
-                                <input type="text" class="form-control" style="padding:4px 7px; font-size:0.8rem; min-width:130px;"
-                                    value="${l.type || ''}" onchange="updateLabOrderField('${l.id}', 'type', this.value)">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" style="padding:4px 7px; font-size:0.8rem; width:75px;"
-                                    placeholder="A2" value="${l.shade || ''}" onchange="updateLabOrderField('${l.id}', 'shade', this.value)">
-                            </td>
-                            <td>
-                                <input type="number" class="inline-price-input" style="width:95px;"
-                                    value="${Number(l.cost || 0)}" onchange="updateLabOrderField('${l.id}', 'cost', this.value)">
-                            </td>
-                            <td>
-                                <input type="date" class="form-control" style="padding:4px 6px; font-size:0.78rem; width:125px;"
-                                    value="${l.start || ''}" onchange="updateLabOrderField('${l.id}', 'start', this.value)">
-                            </td>
-                            <td>
-                                <input type="date" class="form-control" style="padding:4px 6px; font-size:0.78rem; width:125px;"
-                                    value="${l.due || ''}" onchange="updateLabOrderField('${l.id}', 'due', this.value)">
-                            </td>
-                            <td>
-                                <button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteLabOrder('${l.id}')">حذف</button>
-                            </td>
+                            <td>${l.type}</td>
+                            <td>${l.shade || '-'}</td>
+                            <td>${Number(l.cost).toLocaleString()}</td>
+                            <td>${formatDateWithDay(l.start)}</td>
+                            <td>${formatDateWithDay(l.due)}</td>
+                            <td><button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteLabOrder('${l.id}')">حذف</button></td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -3505,7 +2453,7 @@
         document.getElementById('fin-net').innerText = (totalIn - totalOut).toLocaleString();
 
         const wrap = document.getElementById('finance-table-wrap');
-        wrap.innerHTML = db.generalFinance.length === 0 ? '<p style="font-weight:600; color:var(--text-muted);">لا توجد مصاريف أو مدخولات عامة مسجلة.</p>' : `
+        wrap.innerHTML = db.generalFinance.length === 0 ? '<p style="color:var(--text-muted);">لا توجد مصاريف أو مدخولات عامة مسجلة.</p>' : `
             <table>
                 <thead><tr><th>اليوم والتاريخ</th><th>النوع</th><th>البيان</th><th>المبلغ</th><th></th></tr></thead>
                 <tbody>
@@ -3514,7 +2462,7 @@
                             <td>${formatDateWithDay(f.date)}</td>
                             <td>${f.type === 'expense' ? 'مصروف' : 'مدخول'}</td>
                             <td>${f.desc}</td>
-                            <td style="color:${f.type === 'expense' ? 'var(--danger)' : 'var(--success)'}; font-weight:700;">
+                            <td style="color:${f.type === 'expense' ? 'var(--danger)' : 'var(--success)'}; font-weight:bold;">
                                 ${Number(f.amount).toLocaleString()}
                             </td>
                             <td><button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteFinance('${f.id}')">حذف</button></td>
@@ -3557,24 +2505,17 @@
                         if (changed) p.teeth[tNum] = td;
                     });
                 });
-                const feeIdx = db.feeItems.findIndex(f => f.name.trim() === oldName.trim());
-                if (feeIdx !== -1) db.feeItems[feeIdx].name = name;
             }
             cancelEditType();
         } else {
             db.treatmentTypes.push({ id: "tt_" + Date.now(), name, color });
-            if (!db.feeItems.some(f => f.name.trim() === name)) {
-                db.feeItems.push({ id: "f_" + Date.now(), name, price: 0 });
-            }
             document.getElementById('type-name-input').value = '';
         }
 
         saveDB();
         renderTreatmentTypesSettings();
-        renderFeesSettings();
         if (activePatientId) {
             const p = db.patients.find(x => x.uid === activePatientId);
-            populateFeesSelect();
             renderPaletteChips();
             if (p) renderDentalChart(p);
         }
@@ -3593,7 +2534,7 @@
 
     function cancelEditType() {
         editingTypeId = null;
-        document.getElementById('type-form-title').innerText = '🎨 إضافة وتحرير أنواع المعالجات (تسمية ولون)';
+        document.getElementById('type-form-title').innerText = '🎨 التحكم بأنواع المعالجات وألوانها في المخطط';
         document.getElementById('type-name-input').value = '';
         document.getElementById('type-color-input').value = '#ec4899';
         document.getElementById('type-save-btn').innerText = '💾 حفظ';
@@ -3629,24 +2570,56 @@
         if (activePatientId) renderPaletteChips();
     }
 
-    function addFeeItem() {
+    function saveFeeItem() {
         const name = document.getElementById('fee-name-input').value.trim();
+        const category = document.getElementById('fee-category-input').value || "مداواة تحفظية (حشوات)";
         const price = Number(document.getElementById('fee-price-input').value) || 0;
         if (!name) { alert("أدخل اسم المعالجة."); return; }
 
-        db.feeItems.push({ id: "f_" + Date.now(), name, price });
-        if (!db.treatmentTypes.some(t => t.name.trim() === name)) {
-            db.treatmentTypes.push({ id: "tt_" + Date.now(), name, color: "#0284c7" });
+        if (editingFeeId) {
+            const idx = db.feeItems.findIndex(f => f.id === editingFeeId);
+            if (idx !== -1) {
+                db.feeItems[idx] = { ...db.feeItems[idx], name, category, price };
+            }
+            cancelEditFee();
+        } else {
+            db.feeItems.push({ id: "f_" + Date.now(), name, category, price });
+            document.getElementById('fee-name-input').value = '';
+            document.getElementById('fee-price-input').value = '';
         }
-        document.getElementById('fee-name-input').value = '';
-        document.getElementById('fee-price-input').value = '';
+
         saveDB();
         renderFeesSettings();
-        renderTreatmentTypesSettings();
-        if (activePatientId) {
-            populateFeesSelect();
-            renderPaletteChips();
-        }
+        if (activePatientId) populateFeesSelect();
+    }
+
+    function editFeeItem(id) {
+        const f = db.feeItems.find(x => x.id === id);
+        if (!f) return;
+        editingFeeId = id;
+        document.getElementById('fee-form-title').innerText = `✏️ تعديل بند السعر ونوعه: ${f.name}`;
+        document.getElementById('fee-name-input').value = f.name;
+        document.getElementById('fee-category-input').value = f.category || procedureCategories[0];
+        document.getElementById('fee-price-input').value = Number(f.price) || 0;
+        document.getElementById('fee-save-btn').innerText = '💾 حفظ التعديل';
+        document.getElementById('fee-cancel-btn').style.display = 'inline-flex';
+    }
+
+    function cancelEditFee() {
+        editingFeeId = null;
+        document.getElementById('fee-form-title').innerText = '💵 قائمة الأسعار ونوع المعالجة (إضافة وتعديل في أي وقت)';
+        document.getElementById('fee-name-input').value = '';
+        document.getElementById('fee-price-input').value = '';
+        document.getElementById('fee-save-btn').innerText = '💾 حفظ';
+        document.getElementById('fee-cancel-btn').style.display = 'none';
+    }
+
+    function updateFeeCategoryInline(id, newCat) {
+        const f = db.feeItems.find(x => x.id === id);
+        if (!f) return;
+        f.category = newCat;
+        saveDB();
+        if (activePatientId) populateFeesSelect();
     }
 
     function updateFeePriceInline(id, newPrice) {
@@ -3658,21 +2631,40 @@
     }
 
     function renderFeesSettings() {
-        document.getElementById('fees-list').innerHTML = `
+        const filterCat = document.getElementById('fee-filter-category').value || "ALL";
+        const list = filterCat === "ALL"
+            ? db.feeItems
+            : db.feeItems.filter(f => (f.category || "مداواة تحفظية (حشوات)") === filterCat);
+
+        document.getElementById('fees-list').innerHTML = list.length === 0
+            ? '<p style="color:var(--text-muted); font-size:0.82rem;">لا توجد معالجات ضمن هذا النوع.</p>'
+            : `
             <table>
-                <thead><tr><th>المعالجة</th><th>السعر (اضغط وعدّل متى شئت)</th><th></th></tr></thead>
+                <thead><tr><th>المعالجة</th><th>نوع المعالجة</th><th>السعر</th><th>إجراءات</th></tr></thead>
                 <tbody>
-                    ${db.feeItems.map(f => `
+                    ${list.map(f => {
+                        const curCat = f.category || "مداواة تحفظية (حشوات)";
+                        const catOpts = procedureCategories.map(c =>
+                            `<option value="${c}" ${c === curCat ? 'selected' : ''}>${c}</option>`
+                        ).join('');
+                        return `
                         <tr>
                             <td><strong>${f.name}</strong></td>
                             <td>
-                                <input type="number" class="inline-price-input" value="${Number(f.price)}" onchange="updateFeePriceInline('${f.id}', this.value)">
+                                <select class="form-control" style="padding:4px 8px; font-size:0.78rem; min-width:155px;" onchange="updateFeeCategoryInline('${f.id}', this.value)">
+                                    ${catOpts}
+                                </select>
                             </td>
                             <td>
+                                <input type="number" class="inline-price-input" value="${Number(f.price)}" onchange="updateFeePriceInline('${f.id}', this.value)">
+                            </td>
+                            <td style="white-space:nowrap;">
+                                <button class="btn btn-outline btn-sm" onclick="editFeeItem('${f.id}')">تعديل</button>
                                 <button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteFeeItem('${f.id}')">حذف</button>
                             </td>
                         </tr>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </tbody>
             </table>
         `;
@@ -3680,6 +2672,7 @@
 
     function deleteFeeItem(id) {
         if (!confirm("هل تريد حذف هذه المعالجة من قائمة الأجور؟")) return;
+        if (editingFeeId === id) cancelEditFee();
         db.feeItems = db.feeItems.filter(f => f.id !== id);
         saveDB();
         renderFeesSettings();
@@ -3690,7 +2683,7 @@
         const dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
         const a = document.createElement('a');
         a.href = dataStr;
-        a.download = `dental_clinic_backup_${todayStr()}.json`;
+        a.download = `clinic_maher_backup_${todayStr()}.json`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -3715,10 +2708,8 @@
                         feeItems: Array.isArray(imported.feeItems) && imported.feeItems.length > 0 ? imported.feeItems : db.feeItems,
                         doctors: Array.isArray(imported.doctors) && imported.doctors.length > 0 ? imported.doctors : db.doctors
                     };
-                    ensureLicenseStructure();
                     saveDB();
                     updatePasswordUI();
-                    checkLicenseAndGate();
                     renderAll();
                     alert("✅ تم استيراد البيانات بنجاح.");
                 } else {
